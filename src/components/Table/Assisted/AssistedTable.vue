@@ -8,7 +8,7 @@
     ></FormHeader>
     <div class="table">
       <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-        <template class="actions" v-slot:[`{item.actions}`]="{ item }">
+        <template class="actions" v-slot:[`item.actions`]="{ item }">
           <router-link @click="editRow(item)" class="routerLink" to="/">
             <v-icon small class="mr-2">mdi-pencil</v-icon>
           </router-link>
