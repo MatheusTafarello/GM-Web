@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Authentication from "./services/Authentication";
+import { isSignedIn } from "@/services/auth";
 
 import Login from "@/components/Login/Login.vue";
 import Dashboard from "@/components/Dashboard/Dashboard.vue";
@@ -12,18 +12,12 @@ import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 Vue.use(Router);
 
 const loggedInGuard = (to, from, next) => {
-  if (Authentication.isLogged()) {
+  if (isSignedIn()) {
     next();
   }
   else next("/");
 }
 
-const loggedOffGuard = (to, from, next) => {
-  if (!Authentication.isLogged()) {
-    next();
-  }
-  else next("/home");
-}
 
 export default new Router({
   mode: "history",
@@ -32,7 +26,6 @@ export default new Router({
     {
       path: "/",
       name: "Login",
-      beforeEnter: loggedOffGuard,
       component: Login,
     },
     {

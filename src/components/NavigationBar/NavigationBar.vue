@@ -27,7 +27,7 @@
 
       <v-tooltip bottom color="dark">
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" icon color="accent" to="/">
+          <v-btn v-on="on" icon color="accent" @click="leave()">
             <v-icon>mdi-door-open</v-icon>
           </v-btn>
         </template>
@@ -38,51 +38,57 @@
 </template>
 
 <script>
-import Dropdown from "@/common-components/Dropdown/Dropdown.vue";
-
+import Dropdown from '@/common-components/Dropdown/Dropdown.vue';
+import { logout } from '@/services/auth.js';
 export default {
-  name: "NavigationBar",
+  name: 'NavigationBar',
   components: {
-    Dropdown
+    Dropdown,
   },
   data: () => ({
     assistedItems: [
       {
-        title: "Registrar Assistida",
-        icon: "mdi-account-plus",
-        route: "register_assisted"
+        title: 'Registrar Assistida',
+        icon: 'mdi-account-plus',
+        route: 'register_assisted',
       },
       {
-        title: "Criar Medida Protetiva",
-        icon: "mdi-shield-plus",
-        route: "measure_form"
+        title: 'Criar Medida Protetiva',
+        icon: 'mdi-shield-plus',
+        route: 'measure_form',
       },
       {
-        title: "Gerenciar Assistidas",
-        icon: "mdi-table-account",
-        route: "manage_assisteds"
-      }
+        title: 'Gerenciar Assistidas',
+        icon: 'mdi-table-account',
+        route: 'manage_assisteds',
+      },
     ],
     authorItems: [
       {
-        title: "Registrar Autor",
-        icon: "mdi-account-plus",
-        route: "register_author"
+        title: 'Registrar Autor',
+        icon: 'mdi-account-plus',
+        route: 'register_author',
       },
       {
-        title: "Gerenciar Autores",
-        icon: "mdi-table-account",
-        route: "manage_authors"
-      }
+        title: 'Gerenciar Autores',
+        icon: 'mdi-table-account',
+        route: 'manage_authors',
+      },
     ],
-    username: "Claudia",
-    isHome: null
+    username: 'Claudia',
+    isHome: null,
   }),
   watch: {
     $route(to) {
-      this.isHome = to.name == "Home";
-    }
-  }
+      this.isHome = to.name == 'Home';
+    },
+  },
+  methods: {
+    leave() {
+      this.$router.push({ name: 'Login' });
+      logout();
+    },
+  },
 };
 </script>
 
