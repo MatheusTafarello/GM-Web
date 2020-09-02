@@ -8,7 +8,7 @@
     ></FormHeader>
     <div class="table">
       <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-        <template class="actions" v-slot:item.actions="{ item }">
+        <template class="actions" v-slot:[`item.actions`]="{ item }">
           <router-link @click="editRow(item)" class="routerLink" to="/">
             <v-icon small class="mr-2">
               mdi-pencil
@@ -41,7 +41,6 @@ export default {
         { text: "Nome", align: "start", sortable: true, value: "name" },
         { text: "CPF", value: "cpf", sortable: false },
         { text: "DVC", value: "dvc", sortable: false },
-        { text: "ID", value: "id", sortable: false },
         { text: "Ações", value: "actions", sortable: false },
       ],
       config: {
@@ -68,13 +67,11 @@ export default {
           name: "Thomas FIller",
           cpf: "000.000.000-00",
           dvc: "xxxxxxxxxx",
-          id: "000001-01.2020",
         },
         {
           name: "Marcelo Souza",
           cpf: "000.000.000-00",
           dvc: "Não possui",
-          id: "000002-01.2020",
         },
       ];
     },
