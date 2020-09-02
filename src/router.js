@@ -8,6 +8,7 @@ import Dashboard from "@/components/Dashboard/Dashboard.vue";
 import RegisterAuthor from "@/components/Register/Author/RegisterAuthor.vue"
 import AssistedTable from "@/components/Table/Assisted/AssistedTable.vue"
 import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
+import UserTable from "@/components/Table/User/UserTable.vue"
 
 Vue.use(Router);
 
@@ -55,6 +56,11 @@ export default new Router({
       path: "/manage_authors",
       beforeEnter: loggedInGuard,
       component: AuthorTable
+    },
+    {
+      path: "/manage_users",
+      beforeEnter: loggedInGuard,
+      component: UserTable
     }
   ],
 });

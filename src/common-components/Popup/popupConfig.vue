@@ -45,7 +45,7 @@
 		<v-card-text class="headline">{{config.textFeed}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-col md="3" cols="3"> 
+          <v-col class="button" md="3" cols="3"> 
             <v-btn class="information white--text" @click="feedBack = false">
               Ok
             </v-btn>
@@ -461,5 +461,9 @@ export default {
 }
 .headline {
   text-align: center;
+}
+.button{
+	display: flex;
+	justify-content: center;
 }
 </style>

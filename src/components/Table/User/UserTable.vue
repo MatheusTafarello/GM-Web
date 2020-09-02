@@ -2,17 +2,14 @@
   <div id="content">
     <FormHeader
       class="header"
-      title="Autores"
-      subTitle=" - Lista de Autores cadastrados no sistema"
+      title="Usuários"
       :list="route"
     ></FormHeader>
     <div class="table">
       <v-data-table :headers="headers" :items="desserts" class="elevation-1">
         <template class="actions" v-slot:[`item.actions`]="{ item }">
           <router-link @click="editRow(item)" class="routerLink" to="/">
-            <v-icon small class="mr-2">
-              mdi-pencil
-            </v-icon>
+            <v-icon small class="mr-2">mdi-pencil</v-icon>
           </router-link>
           <v-icon @click.stop="openDialog = true">mdi-delete</v-icon>
           <popupConfig
@@ -27,26 +24,26 @@
   </div>
 </template>
 <script>
-import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
-import popupConfig from "@/common-components/Popup/popupConfig.vue";
+import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
+import popupConfig from '@/common-components/Popup/popupConfig.vue';
 
 export default {
   data() {
     return {
       route: [
-        { name: "Página Inicial", route: "home" },
-        { name: "Listagem de Autores", route: "manage_authors" },
+        { name: 'Página Inicial', route: 'home' },
+        { name: ' Usuários ', route: 'manage_assisteds' },
       ],
       headers: [
-        { text: "Nome", align: "start", sortable: true, value: "name" },
-        { text: "CPF", value: "cpf", sortable: false },
-        { text: "DVC", value: "dvc", sortable: false },
-        { text: "Ações", value: "actions", sortable: false },
+        { text: 'Nome', align: 'start', sortable: true, value: 'name' },
+        { text: 'Email', value: 'email', sortable: false },
+        { text: 'Permissão', value: 'permission', sortable: false },
+        { text: 'Ações', value: 'actions', sortable: false },
       ],
       config: {
         iconWaring: true,
-        textDialog:"Tem certeza?",
-        textFeed: "Deletado com sucesso",
+        textDialog: 'Tem certeza?',
+        textFeed: 'Deletada com sucesso',
       },
       openDialog: false,
     };
@@ -64,14 +61,14 @@ export default {
     initialize() {
       this.desserts = [
         {
-          name: "Thomas FIller",
-          cpf: "000.000.000-00",
-          dvc: "xxxxxxxxxx",
+          name: 'Robertinha Carla',
+          email: 'robertinha.carla@email.com',
+          permission: 'Administrador'
         },
         {
-          name: "Marcelo Souza",
-          cpf: "000.000.000-00",
-          dvc: "Não possui",
+          name: 'Ana Paula',
+          email: 'ana.paula@email.com',
+          permission: 'Usuário'
         },
       ];
     },
@@ -97,5 +94,4 @@ export default {
   text-decoration: none;
   float: left;
 }
-
 </style>
