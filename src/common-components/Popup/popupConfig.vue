@@ -19,12 +19,12 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-col md="3">
-            <v-btn text @click.stop="show=false">
+            <v-btn text @click="onCancel">
               Cancelar
             </v-btn>
           </v-col>
           <v-col offset-md="1">
-            <v-btn class="information white--text" v-on:click="activate">
+            <v-btn class="information white--text" v-on:click="onConfirm">
               Sim
             </v-btn>
           </v-col>
@@ -64,7 +64,9 @@ export default {
 	config:{
       type: Object
 	},
-	value: Boolean
+	value: Boolean,
+	onConfirm: Function,
+	onCancel: Function
   },
   data() {
     return {
