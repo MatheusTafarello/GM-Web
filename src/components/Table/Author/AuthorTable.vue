@@ -43,9 +43,9 @@
             :onCancel="cancelButton"
           ></popupConfig>
       </v-card>
-      <div class="card-footer">
+      <!-- <div class="card-footer">
         <v-pagination :length="users" @pagination-change-page="getResults"></v-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
       const token = localStorage.getItem('token');
       const headers = {Authorization: token};
       this.openDialog = false;
-      axios.delete(process.env.VUE_APP_API + 'admin/author', headers).then(() => {
+      axios.delete(process.env.VUE_APP_API + 'admin/author/' + this.selectedId, headers).then(() => {
         this.users.splice(this.users.indexOf(this.users[this.selectedId]) -1, 1);
         this.openDialog = false;
       });
