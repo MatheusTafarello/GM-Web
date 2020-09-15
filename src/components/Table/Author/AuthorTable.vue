@@ -7,48 +7,70 @@
       :list="route"
     ></FormHeader>
     <div class="table">
-      <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-        <template class="actions" v-slot:[`item.actions`]="{ item }">
-          <router-link @click="editRow(item)" class="routerLink" to="/">
-            <v-icon small class="mr-2">
-              mdi-pencil
-            </v-icon>
-          </router-link>
-          <v-icon @click.stop="openDialog = true">mdi-delete</v-icon>
+      <v-card>
+        <div class="card-body table-responsive p-0">
+          <v-simple-table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>DVC</th>
+                <th>ID</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users" :key="user.id">
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.cpf }}</td>
+                <td>{{ user.dvc }}</td>
+                <td>{{ user.id }}</td>
+                <td>
+                  <router-link @click="editRow(item)" class="routerLink" to="/">
+                    <v-icon small class="mr-2">mdi-pencil</v-icon>
+                  </router-link>
+                  <v-icon @click.stop="openDialogs(user.id)">mdi-delete</v-icon>
+                </td>
+              </tr>
+            </tbody></v-simple-table
+          >
+        </div>
           <popupConfig
             :config="config"
             class="popup"
             v-model="openDialog"
-            @click="deleteItem(item)"
+            :onConfirm="deleteUser"
+            :onCancel="cancelButton"
           ></popupConfig>
-        </template>
-      </v-data-table>
+      </v-card>
+      <div class="card-footer">
+        <v-pagination :length="users" @pagination-change-page="getResults"></v-pagination>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
-import popupConfig from "@/common-components/Popup/popupConfig.vue";
+import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
+import popupConfig from '@/common-components/Popup/popupConfig.vue';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       route: [
-        { name: "Página Inicial", route: "home" },
-        { name: "Listagem de Autores", route: "manage_authors" },
-      ],
-      headers: [
-        { text: "Nome", align: "start", sortable: true, value: "name" },
-        { text: "CPF", value: "cpf", sortable: false },
-        { text: "DVC", value: "dvc", sortable: false },
-        { text: "Ações", value: "actions", sortable: false },
+        { name: 'Página Inicial', route: 'home' },
+        { name: 'Listagem de Autores', route: 'manage_authors' },
       ],
       config: {
         iconWaring: true,
-        textDialog:"Tem certeza?",
-        textFeed: "Deletado com sucesso",
+        textDialog: 'Tem certeza?',
+        textFeed: 'Deletado com sucesso',
       },
+      onConfirm: {},
+      onCancel: {},
       openDialog: false,
+      users: {},
+      selectedId: {}
     };
   },
   components: {
@@ -57,28 +79,33 @@ export default {
   },
 
   created() {
-    this.initialize();
+    this.loadUsers();
   },
 
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: "Thomas FIller",
-          cpf: "000.000.000-00",
-          dvc: "xxxxxxxxxx",
-        },
-        {
-          name: "Marcelo Souza",
-          cpf: "000.000.000-00",
-          dvc: "Não possui",
-        },
-      ];
+    loadUsers() {
+      const token = localStorage.getItem('token');
+      const headers = {Authorization: token};
+      axios.get(process.env.VUE_APP_API + 'admin/author', headers).then((res) => {
+        this.users = res.data;
+      });
     },
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      this.desserts.splice(index, 1);
+    deleteUser() {
+      const token = localStorage.getItem('token');
+      const headers = {Authorization: token};
+      this.openDialog = false;
+      axios.delete(process.env.VUE_APP_API + 'admin/author', headers).then(() => {
+        this.users.splice(this.users.indexOf(this.users[this.selectedId]) -1, 1);
+        this.openDialog = false;
+      });
     },
+    cancelButton() {
+      this.openDialog = false;
+    },
+    openDialogs(id){
+      this.selectedId = id;
+      this.openDialog = true;
+    }
   },
 };
 </script>
@@ -97,5 +124,4 @@ export default {
   text-decoration: none;
   float: left;
 }
-
 </style>
