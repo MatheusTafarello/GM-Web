@@ -1,5 +1,6 @@
 <template>
   <div id="content">
+    <ConfirmPopup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" />
     <FormHeader
       class="header"
       title="Assistidas"
@@ -7,18 +8,17 @@
       :list="route"
     ></FormHeader>
     <div class="table">
-      <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-        <template class="actions" v-slot:[`item.actions`]="{ item }">
-          <router-link @click="editRow(item)" class="routerLink" to="/">
-            <v-icon small class="mr-2">mdi-pencil</v-icon>
-          </router-link>
-          <v-icon @click.stop="openDialog = true">mdi-delete</v-icon>
-          <popupConfig
-            :config="config"
-            class="popup"
-            v-model="openDialog"
-            @click="deleteItem(item)"
-          ></popupConfig>
+      <v-data-table :headers="headers" :items="assisteds" class="elevation-1">
+        <template v-slot:body="{ items }">
+          <tr v-for="item in items" :key="item.cpf">
+            <td>{{item.fullName}}</td>
+            <td>{{ item.cpf }}</td>
+            <td>
+              <v-btn @click="openPopup(item)" icon>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </div>
@@ -26,58 +26,55 @@
 </template>
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import popupConfig from '@/common-components/Popup/popupConfig.vue';
+import ConfirmPopup from '@/common-components/Popup/ConfirmPopup.vue';
+// eslint-disable-next-line no-unused-vars
+import { getAssisteds, deleteAssisted } from '@/services/assisted.js';
 
 export default {
+  components: {
+    FormHeader,
+    ConfirmPopup,
+  },
   data() {
     return {
+      assisteds: [],
       route: [
         { name: 'Página Inicial', route: 'home' },
         { name: 'Gerenciar Assistidas', route: 'manage_assisteds' },
       ],
       headers: [
-        { text: 'Nome', align: 'start', sortable: true, value: 'name' },
+        { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },
         { text: 'CPF', value: 'cpf', sortable: false },
-        { text: 'Celular', value: 'celular', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
-      config: {
-        iconWaring: true,
-        textDialog: 'Tem certeza?',
-        textFeed: 'Deletada com sucesso',
-      },
       openDialog: false,
+      selected: {},
     };
   },
-  components: {
-    FormHeader,
-    popupConfig,
-  },
-
   created() {
     this.initialize();
   },
-
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: 'Robertinha Carla',
-          cpf: '000.000.000-00',
-          celular: '(11) 90000-0000',
-          id: '000001-01.2020',
-        },
-        {
-          name: 'Ana Paula',
-          cpf: '000.000.000-00',
-          celular: '(11) 90000-0000',
-          id: '000002-01.2020',
-        },
-      ];
+    async initialize() {
+      this.assisteds = await getAssisteds();
     },
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      this.desserts.splice(index, 1);
+
+    openPopup(item) {
+      this.selected = item;
+      this.openDialog = true;
+    },
+
+    closePopUp() {},
+
+    async deleteItem() {
+      await deleteAssisted(this.selected.id);
+      await this.initialize();
+      this.openDialog = false;
+    },
+
+    async confirmDelete() {
+      console.log(this.selected);
+      // await deleteAssisted(this.selected.id);
     },
   },
 };
