@@ -1,111 +1,76 @@
 <template>
   <div id="content">
+    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :text="type"/>
     <FormHeader
       class="header"
       title="Autores"
-      subTitle=" - Lista de Autores cadastrados no sistema"
+      subTitle=" - Lista de Autores Cadastrados"
       :list="route"
     ></FormHeader>
     <div class="table">
-      <v-card>
-        <div class="card-body table-responsive p-0">
-          <v-simple-table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>DVC</th>
-                <th>ID</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in users" :key="user.id">
-                <td>{{ user.fullName }}</td>
-                <td>{{ user.cpf }}</td>
-                <td>{{ user.dvc }}</td>
-                <td>{{ user.id }}</td>
-                <td>
-                  <router-link @click="editRow(item)" class="routerLink" to="/">
-                    <v-icon small class="mr-2">mdi-pencil</v-icon>
-                  </router-link>
-                  <v-icon @click.stop="openDialogs(user.id)">mdi-delete</v-icon>
-                </td>
-              </tr>
-            </tbody></v-simple-table
-          >
-        </div>
-          <popupConfig
-            :config="config"
-            class="popup"
-            v-model="openDialog"
-            :onConfirm="deleteUser"
-            :onCancel="cancelButton"
-          ></popupConfig>
-      </v-card>
-      <!-- <div class="card-footer">
-        <v-pagination :length="users" @pagination-change-page="getResults"></v-pagination>
-      </div> -->
+      <v-data-table :headers="headers" :items="authors" class="elevation-1">
+        <template v-slot:body="{ items }">
+          <tr v-for="item in items" :key="item.id">
+            <td>{{item.fullName}}</td>
+            <td>{{ item.cpf }}</td>
+            <td>{{ item.dvc }}</td>
+            <td>{{ item.id }}</td>
+            <td>
+              <v-btn @click="openPopup(item)" icon>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
     </div>
   </div>
 </template>
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import popupConfig from '@/common-components/Popup/popupConfig.vue';
-import axios from 'axios';
+import Popup from '@/common-components/Popup/Popup.vue';
+import { getAuthors, deleteAuthor } from '@/services/author.js';
 
 export default {
-  data() {
-    return {
-      route: [
-        { name: 'Página Inicial', route: 'home' },
-        { name: 'Listagem de Autores', route: 'manage_authors' },
-      ],
-      config: {
-        iconWaring: true,
-        textDialog: 'Tem certeza?',
-        textFeed: 'Deletado com sucesso',
-      },
-      onConfirm: {},
-      onCancel: {},
-      openDialog: false,
-      users: {},
-      selectedId: {}
-    };
-  },
   components: {
     FormHeader,
-    popupConfig,
+    Popup,
   },
-
+  data() {
+    return {
+      authors: [],
+      route: [
+        { name: 'Página Inicial', route: 'home' },
+        { name: 'Gerenciar Autores', route: 'manage_authors' },
+      ],
+      headers: [
+        { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },
+        { text: 'CPF', value: 'cpf', sortable: false },
+        { text: 'DVC', value: 'dvc', sortable: false },
+        { text: 'ID', value: 'id', sortable: false },
+        { text: 'Ações', value: 'actions', sortable: false },
+      ],
+      openDialog: false,
+      selected: {},
+      type:"delete"
+    };
+  },
   created() {
-    this.loadUsers();
+    this.initialize();
   },
-
   methods: {
-    loadUsers() {
-      const token = localStorage.getItem('token');
-      const headers = {Authorization: token};
-      axios.get(process.env.VUE_APP_API + 'admin/author', headers).then((res) => {
-        this.users = res.data;
-      });
+    async initialize() {
+      this.authors = await getAuthors();
     },
-    deleteUser() {
-      const token = localStorage.getItem('token');
-      const headers = {Authorization: token};
-      this.openDialog = false;
-      axios.delete(process.env.VUE_APP_API + 'admin/author/' + this.selectedId, headers).then(() => {
-        this.users.splice(this.users.indexOf(this.users[this.selectedId]) -1, 1);
-        this.openDialog = false;
-      });
-    },
-    cancelButton() {
-      this.openDialog = false;
-    },
-    openDialogs(id){
-      this.selectedId = id;
+    openPopup(item) {
+      this.selected = item;
       this.openDialog = true;
-    }
+    },
+    async deleteItem() {
+      await deleteAuthor(this.selected.id);
+      await this.initialize();
+      this.openDialog = false;
+    },
   },
 };
 </script>
