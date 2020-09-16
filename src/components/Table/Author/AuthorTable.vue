@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :text="type"/>
+    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type"/>
     <FormHeader
       class="header"
       title="Autores"
@@ -52,7 +52,7 @@ export default {
       ],
       openDialog: false,
       selected: {},
-      type:"delete"
+      type:""
     };
   },
   created() {
