@@ -6,15 +6,15 @@ export async function getAuthors() {
     let response = await axios.get(process.env.VUE_APP_API + "admin/author", headers);
     return response.data
   } catch (error) {
-    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 export async function deleteAuthor(id) {
   try {
     const headers = { Authorization: localStorage.getItem("token") }
-    axios.delete(process.env.VUE_APP_API + "admin/author/" + id, headers);
+    await axios.delete(process.env.VUE_APP_API + "admin/author/" + id, headers);
   } catch (error) {
-    console.log(error)
+    return Promise.reject(error)
   }
 }
