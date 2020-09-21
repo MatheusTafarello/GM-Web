@@ -1,23 +1,21 @@
 <template>
   <div id="content">
-    <FormHeader
-      class="header"
-      title="Usuários"
-      :list="route"
-    ></FormHeader>
+    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type" />
+    <FormHeader class="header" title="Usuários" :list="route"></FormHeader>
     <div class="table">
-      <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-        <template class="actions" v-slot:[`item.actions`]="{ item }">
-          <router-link @click="editRow(item)" class="routerLink" to="/">
-            <v-icon small class="mr-2">mdi-pencil</v-icon>
-          </router-link>
-          <v-icon @click.stop="openDialog = true">mdi-delete</v-icon>
-          <popupConfig
-            :config="config"
-            class="popup"
-            v-model="openDialog"
-            @click="deleteItem(item)"
-          ></popupConfig>
+      <v-data-table :headers="headers" :items="users" class="elevation-1">
+        <template v-slot:body="{ items }">
+          <tr v-for="item in items" :key="item.id">
+            <td>{{item.fullName}}</td>
+            <td>{{ item.login }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.permissionID }}</td>
+            <td>
+              <v-btn @click="openPopup(item)" icon>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </div>
@@ -25,14 +23,20 @@
 </template>
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import popupConfig from '@/common-components/Popup/popupConfig.vue';
+import Popup from '@/common-components/Popup/Popup.vue';
+import { getUsers, deleteUser } from '@/services/user.js';
 
 export default {
+  components: {
+    FormHeader,
+    Popup,
+  },
   data() {
     return {
+      users: [],
       route: [
         { name: 'Página Inicial', route: 'home' },
-        { name: ' Usuários ', route: 'manage_assisteds' },
+        { name: 'Gerenciar Funcionários', route: 'manage_users' },
       ],
       headers: [
         { text: 'Nome', align: 'start', sortable: true, value: 'name' },
@@ -40,41 +44,27 @@ export default {
         { text: 'Permissão', value: 'permission', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
-      config: {
-        iconWaring: true,
-        textDialog: 'Tem certeza?',
-        textFeed: 'Deletada com sucesso',
-      },
       openDialog: false,
+      selected: {},
+      type: 'delete',
     };
   },
-  components: {
-    FormHeader,
-    popupConfig,
-  },
-
   created() {
     this.initialize();
   },
-
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: 'Robertinha Carla',
-          email: 'robertinha.carla@email.com',
-          permission: 'Administrador'
-        },
-        {
-          name: 'Ana Paula',
-          email: 'ana.paula@email.com',
-          permission: 'Usuário'
-        },
-      ];
+    async initialize() {
+      this.users = await getUsers();
     },
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      this.desserts.splice(index, 1);
+    openPopup(item) {
+      this.selected = item;
+      this.openDialog = true;
+    },
+    async deleteItem() {
+      console.log(this.selected);
+      await deleteUser(this.selected.id);
+      await this.initialize();
+      this.openDialog = false;
     },
   },
 };

@@ -13,7 +13,7 @@ export async function getAssisteds() {
 export async function deleteAssisted(id) {
   try {
     const headers = { Authorization: localStorage.getItem("token") }
-    axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, headers);
+    await axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, headers);
   } catch (error) {
     console.log(error)
   }

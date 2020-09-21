@@ -10,11 +10,10 @@
     <div class="table">
       <v-data-table :headers="headers" :items="authors" class="elevation-1">
         <template v-slot:body="{ items }">
-          <tr v-for="item in items" :key="item.id">
+          <tr v-for="item in items" :key="item.cpf">
             <td>{{item.fullName}}</td>
             <td>{{ item.cpf }}</td>
             <td>{{ item.dvc }}</td>
-            <td>{{ item.id }}</td>
             <td>
               <v-btn @click="openPopup(item)" icon>
                 <v-icon>mdi-delete</v-icon>
@@ -47,12 +46,11 @@ export default {
         { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },
         { text: 'CPF', value: 'cpf', sortable: false },
         { text: 'DVC', value: 'dvc', sortable: false },
-        { text: 'ID', value: 'id', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
       openDialog: false,
       selected: {},
-      type:""
+      type:"delete"
     };
   },
   created() {
@@ -68,6 +66,7 @@ export default {
     },
     async deleteItem() {
       await deleteAuthor(this.selected.id);
+      this.authors = [];
       await this.initialize();
       this.openDialog = false;
     },
