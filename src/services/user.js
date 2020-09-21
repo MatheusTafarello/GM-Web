@@ -18,3 +18,13 @@ export async function deleteUser(id) {
     return Promise.reject(error)
   }
 }
+
+export async function createUser(data){
+  try {
+    const headers = { Authorization: localStorage.getItem("token") };
+    await axios.post(process.env.VUE_APP_API + "admin/user/", data , headers);
+  } catch(error){
+    return Promise.reject(error)
+  }
+
+}
