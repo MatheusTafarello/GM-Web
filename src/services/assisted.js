@@ -18,3 +18,15 @@ export async function deleteAssisted(id) {
     console.log(error)
   }
 }
+
+export async function registerAssisted(payload) {
+  try {
+    const headers = { 
+      'Authorization': localStorage.getItem("token"),
+      'Content-Type': 'multipart/form-data'
+    }
+    axios.post(process.env.VUE_APP_API + "admin/assisted/", payload, headers);
+  } catch (error) {
+    console.log(error)
+  }
+}

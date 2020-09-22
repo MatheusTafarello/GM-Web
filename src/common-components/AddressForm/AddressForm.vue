@@ -7,7 +7,6 @@
           v-model="form.cep"
           ref="cep"
           @blur="getAddress(form.cep)"
-          @input="formatCep(form.cep)"
           label="CEP"
           :rules="rules.cep"
           maxlength="9"
@@ -96,7 +95,7 @@ export default {
     ],
     rules: {
       cep: [
-        v => /^(([0-9]{5}-[0-9]{3}))$/.test(v) || "CEP inválido",
+        
         v => !!v || "O campo é obrigatório"
       ],
       number: [

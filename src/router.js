@@ -6,6 +6,7 @@ import { isSignedIn } from "@/services/auth";
 import Login from "@/components/Login/Login.vue";
 import Dashboard from "@/components/Dashboard/Dashboard.vue";
 import RegisterAuthor from "@/components/Register/Author/RegisterAuthor.vue"
+import RegisterAssisted from "@/components/Register/Assisted/RegisterAssisted.vue"
 import AssistedTable from "@/components/Table/Assisted/AssistedTable.vue"
 import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 import UserTable from "@/components/Table/User/UserTable.vue"
@@ -39,6 +40,11 @@ export default new Router({
       path: "/register_author",
       beforeEnter: loggedInGuard,
       component: RegisterAuthor
+    },
+    {
+      path: "/register_assisted",
+      beforeEnter: loggedInGuard,
+      component: RegisterAssisted
     },
     {
       path: "/manage_assisteds",
