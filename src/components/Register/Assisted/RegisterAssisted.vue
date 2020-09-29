@@ -35,16 +35,27 @@ export default {
     },
     async createAssisted() {
       const { assistedValid, addressValid } = this.form;
-      const form = { ...this.form };
+      let form = { ...this.form };
       this.isLoading = true;
       if (assistedValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'assistedPhoto.jpg');
         for (const field in form) {
-          if (field === 'assistedValid' || field === 'addressValid' || field === 'image' || field === 'photograph') {
+          if (
+            field === 'assistedValid' ||
+            field === 'addressValid' ||
+            field === 'image' ||
+            field === 'photograph'
+          ) {
             continue;
           } else {
-            fd.append(`${field}`, form[field]);
+            if (field === 'cep' || field === 'cpf') {
+              let sanitizedField = form[field].replaceAll('-', '');
+              sanitizedField = sanitizedField.replaceAll('.', '');
+              fd.append(`${field}`, sanitizedField);
+            } else {
+              fd.append(`${field}`, form[field]);
+            }
           }
         }
         delete form.image;

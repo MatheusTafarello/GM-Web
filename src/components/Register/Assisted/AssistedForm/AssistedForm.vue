@@ -22,6 +22,7 @@
         v-model="form.cpf"
         label="CPF"
         :rules="rules.cpf"
+        @input="formatCPF(form.cpf)"
         maxlength="11"
         dense
         outlined
@@ -66,7 +67,7 @@ export default {
     },
     rules: {
       fullname: [(v) => !!v || 'O campo é obrigatório'],
-      cpf: [(v) => !!v || 'CPF inválido!'],
+      cpf: [v => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || "CPF inválido!"],
       password: [
         (v) => !!v || 'O campo é obrigatório',
       ],
