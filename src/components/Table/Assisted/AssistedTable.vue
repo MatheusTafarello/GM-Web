@@ -27,7 +27,6 @@
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
 import Popup from '@/common-components/Popup/Popup.vue';
-// eslint-disable-next-line no-unused-vars
 import { getAssisteds, deleteAssisted } from '@/services/assisted.js';
 
 export default {

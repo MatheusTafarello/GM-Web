@@ -80,6 +80,11 @@ export default {
     ],
     userItems: [
       {
+        title: 'Registrar Usuário',
+        icon: 'mdi-account-plus',
+        route: 'register_user'
+      },
+      {
         title: 'Gerenciar Usuários',
         icon: 'mdi-account-plus',
         route: 'manage_users',
