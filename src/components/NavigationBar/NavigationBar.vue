@@ -13,6 +13,9 @@
       <Dropdown :items="authorItems" icon="mdi-human-male" color="blue lighten-4">
         <div class="font-weight-light">Autor</div>
       </Dropdown>
+      <Dropdown :items="userItems" icon="mdi-account" color="information">
+        <div class="font-weight-light">Funcionário</div>
+      </Dropdown>
 
       <v-btn text color="white" class="text-capitalize font-weight-light">
         <v-icon color="green" left>mdi-map</v-icon>Mapa
@@ -73,6 +76,18 @@ export default {
         title: 'Gerenciar Autores',
         icon: 'mdi-table-account',
         route: 'manage_authors',
+      },
+    ],
+    userItems: [
+      {
+        title: 'Registrar Usuário',
+        icon: 'mdi-account-plus',
+        route: 'register_user'
+      },
+      {
+        title: 'Gerenciar Usuários',
+        icon: 'mdi-account-plus',
+        route: 'manage_users',
       },
     ],
     username: 'Claudia',

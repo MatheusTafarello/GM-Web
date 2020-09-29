@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <ConfirmPopup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" />
+    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type"/>
     <FormHeader
       class="header"
       title="Assistidas"
@@ -26,14 +26,13 @@
 </template>
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import ConfirmPopup from '@/common-components/Popup/ConfirmPopup.vue';
-// eslint-disable-next-line no-unused-vars
+import Popup from '@/common-components/Popup/Popup.vue';
 import { getAssisteds, deleteAssisted } from '@/services/assisted.js';
 
 export default {
   components: {
     FormHeader,
-    ConfirmPopup,
+    Popup,
   },
   data() {
     return {
@@ -49,6 +48,7 @@ export default {
       ],
       openDialog: false,
       selected: {},
+      type: "delete"
     };
   },
   created() {
