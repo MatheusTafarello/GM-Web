@@ -26,7 +26,7 @@
         <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" @input="sendData()"/>
         <v-checkbox
           v-model="form.hasGun"
-          label="Porte de arma ?"
+          label="Porte de arma?"
           style="margin:0px 15px; padding:0"
           @input="sendData()"
            true-value="true" 
