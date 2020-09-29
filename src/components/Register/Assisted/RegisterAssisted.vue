@@ -35,7 +35,7 @@ export default {
     },
     async createAssisted() {
       const { assistedValid, addressValid } = this.form;
-      let form = { ...this.form };
+      const form = { ...this.form };
       this.isLoading = true;
       if (assistedValid && addressValid) {
         const fd = new FormData();
