@@ -18,3 +18,17 @@ export async function deleteAuthor(id) {
     return Promise.reject(error)
   }
 }
+
+export async function registerAuthor(payload){
+  try{
+    const headers = { 
+      'Authorization': localStorage.getItem("token"),
+      'Content-Type': 'multipart/form-data'
+    }
+    let response = await axios.post(process.env.VUE_APP_API + "admin/author/", payload, headers);
+    console.log(response);
+  }
+  catch(error){
+    console.log(error);
+  }
+}

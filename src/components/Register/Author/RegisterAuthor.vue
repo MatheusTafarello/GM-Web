@@ -16,7 +16,7 @@
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
 import AuthorForm from "./AuthorForm/AuthorForm.vue";
-import api from "@/services/axiosCfg.js";
+import {registerAuthor} from "@/services/author.js";
 
 export default {
   components: {
@@ -38,27 +38,35 @@ export default {
       Object.keys(form).map(key => {
         this.form[key] = form[key];
       });
+      
+      console.log('Dados: ', this.form)
     },
     async createAuthor() {
       const { authorValid, addressValid } = this.form;
+      this.revertFormat();
       const form = { ...this.form };
       this.isLoading = true;
       if (authorValid && addressValid) {
         const fd = new FormData();
-        fd.append("file", form.image, "authorPhoto.jpg");
+        fd.append("photography", form.image, "authorPhoto.jpg");
         delete form.image;
+
         fd.append("information", form);
 
-        api
-          .post("/admin/author", fd)
-          .then(res => {
-            console.log(res);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        console.log('CPF: ', this.form.cpf)
+        console.log('CEP: ', this.form.cep)
+
+        registerAuthor(fd);
       }
       this.isLoading = false;
+    },
+    revertFormat(){
+
+      this.form.cpf = this.form.cpf.replace(".","");
+      this.form.cpf = this.form.cpf.replace("-","");
+      this.form.cpf = this.form.cpf.replace(".","");
+
+      this.form.cep = this.form.cep.replace("-","");
     }
   }
 };

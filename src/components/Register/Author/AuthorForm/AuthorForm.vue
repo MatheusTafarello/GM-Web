@@ -9,24 +9,28 @@
         dense
         outlined
         validate-on-blur
+        @input="sendData()"
       />
       <v-text-field
         v-model="form.cpf"
         label="CPF"
         :rules="rules.cpf"
         maxlength="11"
-        @input="formatCPF(form.cpf)"
+        @input="formatCPF(form.cpf), sendData()"
         dense
         outlined
       />
-      <v-textarea height="100px" v-model="form.description" label="Observação" dense outlined />
+      <v-textarea height="100px" v-model="form.description" label="Observação" dense outlined @input="sendData()"/>
 
       <div style="display:flex; align-items: center">
-        <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" />
+        <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" @input="sendData()"/>
         <v-checkbox
           v-model="form.hasGun"
           label="Porte de arma ?"
           style="margin:0px 15px; padding:0"
+          @input="sendData()"
+           true-value="true" 
+           false-value="false"
         />
       </div>
       <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
