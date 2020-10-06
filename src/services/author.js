@@ -19,16 +19,27 @@ export async function deleteAuthor(id) {
   }
 }
 
-export async function registerAuthor(payload){
+export async function registerAuthor(author){
+  
   try{
     const headers = { 
       'Authorization': localStorage.getItem("token"),
       'Content-Type': 'multipart/form-data'
     }
-    let response = await axios.post(process.env.VUE_APP_API + "admin/author/", payload, headers);
+    let response = await axios.post(process.env.VUE_APP_API + "admin/author/", author, headers);
     console.log(response);
+
+    return true;
   }
   catch(error){
-    console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+
+      }  else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error triggered:', error.message);
+      }
+      console.log('Error Config: ',error.config);
   }
+  
 }

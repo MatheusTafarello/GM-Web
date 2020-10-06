@@ -39,37 +39,45 @@ export default {
         this.form[key] = form[key];
       });
       
-      console.log('Dados: ', this.form)
     },
     async createAuthor() {
       const { authorValid, addressValid } = this.form;
-      this.revertFormat();
+      
       const form = { ...this.form };
-      this.isLoading = true;
+
       if (authorValid && addressValid) {
+        this.isLoading = true;
         const fd = new FormData();
-        fd.append("photography", form.image, "authorPhoto.jpg");
+        fd.append('photograph', form.image, 'authorPhoto.jpg');
+        for (const field in form) {
+          if (
+            field === 'authorValid' ||
+            field === 'addressValid' ||
+            field === 'image' ||
+            field === 'photograph'
+          ) {
+            continue;
+          } else {
+            if (field === 'cep' || field === 'cpf') {
+              let sanitizedField = form[field].replaceAll('-', '');
+              sanitizedField = sanitizedField.replaceAll('.', '');
+              fd.append(`${field}`, sanitizedField);
+            } else {
+              fd.append(`${field}`, form[field]);
+            }
+          }
+        }
         delete form.image;
 
-        fd.append("information", form);
-
-        console.log('CPF: ', this.form.cpf)
-        console.log('CEP: ', this.form.cep)
-
-        registerAuthor(fd);
+        let status = await registerAuthor(fd)
+        if(status)this.$router.push('/home');
+        this.isLoading = false;
       }
-      this.isLoading = false;
-    },
-    revertFormat(){
-
-      this.form.cpf = this.form.cpf.replace(".","");
-      this.form.cpf = this.form.cpf.replace("-","");
-      this.form.cpf = this.form.cpf.replace(".","");
-
-      this.form.cep = this.form.cep.replace("-","");
+      }
     }
   }
-};
+
+
 </script>
 
 <style scoped lang="css">

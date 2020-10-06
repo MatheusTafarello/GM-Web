@@ -3,8 +3,8 @@
     <h1 class="headline">Informações Pessoais</h1>
     <v-form class="form" v-model="form.authorValid">
       <v-text-field
-        v-model="form.fullname"
-        :rules="rules.fullname"
+        v-model="form.fullName"
+        :rules="rules.fullName"
         label="Nome Completo"
         dense
         outlined
@@ -20,7 +20,7 @@
         dense
         outlined
       />
-      <v-textarea height="100px" v-model="form.description" label="Observação" dense outlined @input="sendData()"/>
+      <v-textarea height="100px" v-model="form.observation" label="Observação" dense outlined @input="sendData()"/>
 
       <div style="display:flex; align-items: center">
         <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" @input="sendData()"/>
@@ -54,15 +54,15 @@ export default {
   data: () => ({
     form: {
       authorValid: false,
-      fullname: "",
+      fullName: "",
       cpf: "",
-      description: "",
+      observation: "",
       dvc: "",
       hasGun: false,
       image: null
     },
     rules: {
-      fullname: [v => !!v || "O campo é obrigatório"],
+      fullName: [v => !!v || "O campo é obrigatório"],
       cpf: [v => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || "CPF inválido!"],
       dvc: [v => !!v || "O campo é obrigatório"],
       image: [
