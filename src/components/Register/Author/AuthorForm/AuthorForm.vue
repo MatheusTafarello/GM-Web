@@ -3,30 +3,34 @@
     <h1 class="headline">Informações Pessoais</h1>
     <v-form class="form" v-model="form.authorValid">
       <v-text-field
-        v-model="form.fullname"
-        :rules="rules.fullname"
+        v-model="form.fullName"
+        :rules="rules.fullName"
         label="Nome Completo"
         dense
         outlined
         validate-on-blur
+        @input="sendData()"
       />
       <v-text-field
         v-model="form.cpf"
         label="CPF"
         :rules="rules.cpf"
         maxlength="11"
-        @input="formatCPF(form.cpf)"
+        @input="formatCPF(form.cpf), sendData()"
         dense
         outlined
       />
-      <v-textarea height="100px" v-model="form.description" label="Observação" dense outlined />
+      <v-textarea height="100px" v-model="form.observation" label="Observação" dense outlined @input="sendData()"/>
 
       <div style="display:flex; align-items: center">
-        <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" />
+        <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" @input="sendData()"/>
         <v-checkbox
           v-model="form.hasGun"
           label="Porte de arma?"
           style="margin:0px 15px; padding:0"
+          @input="sendData()"
+           true-value="true" 
+           false-value="false"
         />
       </div>
       <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
@@ -50,15 +54,15 @@ export default {
   data: () => ({
     form: {
       authorValid: false,
-      fullname: "",
+      fullName: "",
       cpf: "",
-      description: "",
+      observation: "",
       dvc: "",
       hasGun: false,
       image: null
     },
     rules: {
-      fullname: [v => !!v || "O campo é obrigatório"],
+      fullName: [v => !!v || "O campo é obrigatório"],
       cpf: [v => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || "CPF inválido!"],
       dvc: [v => !!v || "O campo é obrigatório"],
       image: [
