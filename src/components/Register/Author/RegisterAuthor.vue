@@ -16,7 +16,7 @@
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
 import AuthorForm from "./AuthorForm/AuthorForm.vue";
-import api from "@/services/axiosCfg.js";
+import {registerAuthor} from "@/services/author.js";
 
 export default {
   components: {
@@ -38,30 +38,46 @@ export default {
       Object.keys(form).map(key => {
         this.form[key] = form[key];
       });
+      
     },
     async createAuthor() {
       const { authorValid, addressValid } = this.form;
+      
       const form = { ...this.form };
-      this.isLoading = true;
-      if (authorValid && addressValid) {
-        const fd = new FormData();
-        fd.append("file", form.image, "authorPhoto.jpg");
-        delete form.image;
-        fd.append("information", form);
 
-        api
-          .post("/admin/author", fd)
-          .then(res => {
-            console.log(res);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      if (authorValid && addressValid) {
+        this.isLoading = true;
+        const fd = new FormData();
+        fd.append('photograph', form.image, 'authorPhoto.jpg');
+        for (const field in form) {
+          if (
+            field === 'authorValid' ||
+            field === 'addressValid' ||
+            field === 'image' ||
+            field === 'photograph'
+          ) {
+            continue;
+          } else {
+            if (field === 'cep' || field === 'cpf') {
+              let sanitizedField = form[field].replaceAll('-', '');
+              sanitizedField = sanitizedField.replaceAll('.', '');
+              fd.append(`${field}`, sanitizedField);
+            } else {
+              fd.append(`${field}`, form[field]);
+            }
+          }
+        }
+        delete form.image;
+
+        let status = await registerAuthor(fd)
+        if(status)this.$router.push('/home');
+        this.isLoading = false;
       }
-      this.isLoading = false;
+      }
     }
   }
-};
+
+
 </script>
 
 <style scoped lang="css">
