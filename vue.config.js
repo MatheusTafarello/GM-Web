@@ -3,7 +3,7 @@ module.exports = {
     "vuetify"
   ],
   //For CORS problem
-  devServer:{
-    proxy:'http://localhost:4000/'
+  devServer: {
+    proxy: 'http://localhost:4000/'
   }
 }
