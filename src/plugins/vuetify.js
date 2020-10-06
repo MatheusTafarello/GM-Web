@@ -15,7 +15,8 @@ export default new Vuetify({
         warning: '#ffef61',
         danger: '#ff5858',
         dark: '#4a4a4a',
-        light: '#e9e9e9'
+        light: '#e9e9e9',
+        lightGreen: '#67F0A6'
       },
 
     }
