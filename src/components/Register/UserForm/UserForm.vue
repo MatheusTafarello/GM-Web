@@ -83,7 +83,10 @@ export default {
           'Sua senha deve conter pelo menos 8 caracteres incluindo: uma letra maiúscula, um símbolo e um número.',
       ],
       email: [(v) => /^(?=.*[@])/.test(v) || "Seu E-mail deve conter o caractere '@'"],
-      login: [(v) => v.length <= 10 || 'Nome de usuário muito longo.',(v) => !!v || 'O campo é obrigatório'],
+      login: [
+        (v) => v.length <= 10 || 'Nome de usuário muito longo.',
+        (v) => !!v || 'O campo é obrigatório',
+      ],
     },
   }),
   methods: {
@@ -93,7 +96,11 @@ export default {
       } else {
         this.form.permissionID = 3;
       }
-      await createUser(this.form);
+      let status = await createUser(this.form);
+      if (status) this.$router.push('/home');
+
+      /* let status = await registerAuthor(fd)
+        if(status)this.$router.push('/home'); */
     },
   },
 };

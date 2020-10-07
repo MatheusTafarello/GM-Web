@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function getUsers(){
+export async function getUsers() {
   try {
     const headers = { Authorization: localStorage.getItem("token") }
     const response = await axios.get(process.env.VUE_APP_API + 'admin/user', headers)
@@ -19,11 +19,12 @@ export async function deleteUser(id) {
   }
 }
 
-export async function createUser(data){
+export async function createUser(data) {
   try {
     const headers = { Authorization: localStorage.getItem("token") };
-    await axios.post(process.env.VUE_APP_API + "admin/user/", data , headers);
-  } catch(error){
+    await axios.post(process.env.VUE_APP_API + "admin/user/", data, headers);
+    return true;
+  } catch (error) {
     return Promise.reject(error)
   }
 
