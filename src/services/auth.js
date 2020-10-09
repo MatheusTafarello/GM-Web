@@ -5,8 +5,8 @@ export async function login(data) {
   if (data) {
     try {
       let res = await axios.post(process.env.VUE_APP_API + "admin/login", data);
-      const { token, name } = res.data
-
+      let { token, name } = res.data
+      token = token.charAt(0).toUpperCase() + token.slice(1)
       localStorage.setItem("token", token)
       localStorage.setItem("name", name)
 

@@ -6,7 +6,7 @@
       <v-data-table :headers="headers" :items="users" class="elevation-1">
         <template v-slot:body="{ items }">
           <tr v-for="item in items" :key="item.id">
-            <td>{{item.fullName}}</td>
+            <td>{{ item.fullName }}</td>
             <td>{{ item.login }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.permissionID }}</td>
@@ -40,6 +40,7 @@ export default {
       ],
       headers: [
         { text: 'Nome', align: 'start', sortable: true, value: 'name' },
+        { text: 'Login', value: 'login', sortable: false },
         { text: 'Email', value: 'email', sortable: false },
         { text: 'Permissão', value: 'permission', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },

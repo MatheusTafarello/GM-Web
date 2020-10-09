@@ -7,31 +7,31 @@
 </template>
 
 <script>
-import assistedIcon from "@/assets/assistedIcon.png";
-import mapIcon from "@/assets/mapIcon.png";
+import assistedIcon from '@/assets/assistedIcon.png';
+import mapIcon from '@/assets/mapIcon.png';
 
-import Card from "../Card/Card.vue";
+import Card from '../Card/Card.vue';
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
-    Card
+    Card,
   },
 
   data: () => ({
     cardInfo: [
       {
-        title: "Assistida",
+        title: 'Assistida',
         picture: assistedIcon,
-        url: "login"
+        url: 'manage_assisteds',
       },
       {
-        title: "Localização",
+        title: 'Localização',
         picture: mapIcon,
-        url: "login"
-      }
-    ]
-  })
+        url: 'map',
+      },
+    ],
+  }),
 };
 </script>
 

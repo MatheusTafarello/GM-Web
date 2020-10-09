@@ -2,7 +2,7 @@
   <div>
     <h1 class="headline">Endereço</h1>
     <v-form v-model="form.addressValid" class="form" ref="form" @input="$emit('sendData', form)">
-      <div style="display: flex;">
+      <div style="display: flex">
         <v-text-field
           v-model="form.cep"
           ref="cep"
@@ -21,7 +21,7 @@
           dense
           outlined
           :rules="rules.number"
-          style="width: 5%; margin-left:10px"
+          style="width: 5%; margin-left: 10px"
           validate-on-blur
         />
       </div>
@@ -34,7 +34,7 @@
         dense
         outlined
       />
-      <div style="display: flex;">
+      <div style="display: flex">
         <v-text-field v-model="form.city" label="Cidade" :rules="rules.city" dense outlined />
         <v-autocomplete
           v-model="form.state"
@@ -44,7 +44,7 @@
           dense
           outlined
           no-data-text="Nenhuma correspondência"
-          style="width: 5%; margin-left:10px"
+          style="width: 5%; margin-left: 10px"
         />
       </div>
     </v-form>
@@ -52,83 +52,84 @@
 </template>
 
 <script>
-import cepPromise from "cep-promise";
+import cepPromise from 'cep-promise';
 
 export default {
   data: () => ({
     form: {
       addressValid: false,
-      cep: "",
-      number: "",
-      street: "",
-      district: "",
-      city: "",
-      state: ""
+      cep: '',
+      number: '',
+      street: '',
+      district: '',
+      city: '',
+      state: '',
     },
     states: [
-      "AC",
-      "AL",
-      "AP",
-      "AM",
-      "BA",
-      "CE",
-      "DF",
-      "ES",
-      "GO",
-      "MA",
-      "MT",
-      "MS",
-      "MG",
-      "PA",
-      "PB",
-      "PR",
-      "PE",
-      "PI",
-      "RJ",
-      "RN",
-      "RS",
-      "RO",
-      "RR",
-      "SC",
-      "SP",
-      "SE",
-      "TO"
+      'AC',
+      'AL',
+      'AP',
+      'AM',
+      'BA',
+      'CE',
+      'DF',
+      'ES',
+      'GO',
+      'MA',
+      'MT',
+      'MS',
+      'MG',
+      'PA',
+      'PB',
+      'PR',
+      'PE',
+      'PI',
+      'RJ',
+      'RN',
+      'RS',
+      'RO',
+      'RR',
+      'SC',
+      'SP',
+      'SE',
+      'TO',
     ],
     rules: {
       cep: [
-        v => /^(([0-9]{5}-[0-9]{3}))$/.test(v) || "CEP inválido",
-        v => !!v || "O campo é obrigatório"
+        (v) => /^(([0-9]{5}-[0-9]{3}))$/.test(v) || 'CEP inválido',
+        (v) => !!v || 'O campo é obrigatório',
       ],
       number: [
-        v => !!v || "O campo é obrigatório",
-        v => !isNaN(v) || "Deve ser um número"
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => !isNaN(v) || 'Deve ser um número',
+        (v) => v.length <= 5 || 'No máximo 5 digitos',
       ],
-      street: [v => !!v || "O campo é obrigatório"],
-      district: [v => !!v || "O campo é obrigatório"],
-      state: [v => !!v || "O campo é obrigatório"],
-      city: [v => !!v || "O campo é obrigatório"]
-    }
+      street: [(v) => !!v || 'O campo é obrigatório'],
+      district: [(v) => !!v || 'O campo é obrigatório'],
+      state: [(v) => !!v || 'O campo é obrigatório'],
+      city: [(v) => !!v || 'O campo é obrigatório'],
+    },
   }),
   watch: {
     form: {
       handler() {
         this.sendData();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     async getAddress(cep) {
-      cep = cep.replace("-", "");
+      cep = cep.replace('-', '');
       if (cep.length !== 8) return;
       try {
         let response = await cepPromise(cep);
         for (let key in response) {
           const element = response[key];
           // must change based on api
-          key = key == "cep" ? "cep" : key;
-          key = key == "neighborhood" ? "district" : key;
-          this.form[key] = this.form[key] == "" ? element : this.form[key];
+          key = key == 'cep' ? 'cep' : key;
+          key = key == 'neighborhood' ? 'district' : key;
+          this.form[key] = this.form[key] == '' ? element : this.form[key];
         }
         this.sendData();
       } catch (e) {
@@ -137,14 +138,14 @@ export default {
     },
     formatCep(cep) {
       // this.form.cep = cep.replace(/[^0-9\x2D]/g, "");
-      if (cep.length === 8 && !cep.includes("-")) {
+      if (cep.length === 8 && !cep.includes('-')) {
         this.form.cep = `${cep.substr(0, 5)}-${cep.substr(5, 9)}`;
       }
     },
     sendData() {
-      this.$emit("sendData", this.form);
-    }
-  }
+      this.$emit('sendData', this.form);
+    },
+  },
 };
 </script>
 

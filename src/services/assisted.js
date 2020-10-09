@@ -2,31 +2,37 @@ import axios from "axios"
 
 export async function getAssisteds() {
   try {
-    const headers = { Authorization: localStorage.getItem("token") }
-    let response = await axios.get(process.env.VUE_APP_API + "admin/assisted", headers);
+    const config = {
+      headers: { Authorization: localStorage.getItem("token") }
+    }
+    let response = await axios.get(process.env.VUE_APP_API + "admin/assisted", config);
     return response.data
   } catch (error) {
-    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 export async function deleteAssisted(id) {
   try {
-    const headers = { Authorization: localStorage.getItem("token") }
-    await axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, headers);
+    const config = {
+      headers: { Authorization: localStorage.getItem("token") }
+    }
+    await axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, config);
   } catch (error) {
-    console.log(error)
+    return Promise.reject(error)
   }
 }
 
 export async function registerAssisted(payload) {
   try {
-    const headers = { 
-      'Authorization': localStorage.getItem("token"),
-      'Content-Type': 'multipart/form-data'
+    const config = {
+      headers: {
+        'Authorization': localStorage.getItem("token"),
+        'Content-Type': 'multipart/form-data'
+      }
     }
-    axios.post(process.env.VUE_APP_API + "admin/assisted/", payload, headers);
+    axios.post(process.env.VUE_APP_API + "admin/assisted/", payload, config);
   } catch (error) {
-    console.log(error)
+    return Promise.reject(error)
   }
 }
