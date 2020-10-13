@@ -11,6 +11,7 @@ import AssistedTable from "@/components/Table/Assisted/AssistedTable.vue"
 import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 import UserTable from "@/components/Table/User/UserTable.vue"
 import RegisterUser from "@/components/Register/UserForm/UserForm.vue"
+import Map from "@/components/Map/Index.vue";
 
 Vue.use(Router);
 
@@ -66,6 +67,11 @@ export default new Router({
       path: "/register_user",
       beforeEnter: loggedInGuard,
       component: RegisterUser
-    }
+    },
+    {
+      path: "/map",
+      beforeEnter: loggedInGuard,
+      component: Map
+    },
   ],
 });

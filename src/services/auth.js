@@ -42,4 +42,9 @@ export function isSignedIn() {
    } catch (_) {
      return false;
    } */
-} 
+}
+
+export function getUsername() {
+  const name = localStorage.getItem("name");
+  return name ? name : "";
+}

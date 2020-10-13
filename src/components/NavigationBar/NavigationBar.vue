@@ -42,7 +42,7 @@
 
 <script>
 import Dropdown from '@/common-components/Dropdown/Dropdown.vue';
-import { logout } from '@/services/auth.js';
+import { logout, getUsername } from '@/services/auth.js';
 export default {
   name: 'NavigationBar',
   components: {
@@ -82,7 +82,7 @@ export default {
       {
         title: 'Registrar Usuário',
         icon: 'mdi-account-plus',
-        route: 'register_user'
+        route: 'register_user',
       },
       {
         title: 'Gerenciar Usuários',
@@ -93,6 +93,9 @@ export default {
     username: 'Claudia',
     isHome: null,
   }),
+  mounted() {
+    this.username = getUsername();
+  },
   watch: {
     $route(to) {
       this.isHome = to.name == 'Home';
