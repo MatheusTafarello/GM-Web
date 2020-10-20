@@ -58,7 +58,7 @@ export default {
       {
         title: 'Criar Medida Protetiva',
         icon: 'mdi-shield-plus',
-        route: 'measure_form',
+        route: 'register_measure',
       },
       {
         title: 'Gerenciar Assistidas',

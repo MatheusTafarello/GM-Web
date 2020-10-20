@@ -12,6 +12,8 @@ import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 import UserTable from "@/components/Table/User/UserTable.vue"
 import RegisterUser from "@/components/Register/UserForm/UserForm.vue"
 import Map from "@/components/Map/Index.vue";
+import RegisterMeasure from "@/components/Register/ProtectiveMeasure/RegisterMeasure.vue"
+
 
 Vue.use(Router);
 
@@ -73,5 +75,10 @@ export default new Router({
       beforeEnter: loggedInGuard,
       component: Map
     },
+    {
+      path: "/register_measure",
+      beforeEnter: loggedInGuard,
+      component: RegisterMeasure
+    }
   ],
 });
