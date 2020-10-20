@@ -1,16 +1,16 @@
 <template>
   <v-app>
     <v-content>
-      <NavigationBar  v-if="$route.name !== 'Login'" />
+      <NavigationBar v-if="$route.name !== 'Login'" />
       <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import NavigationBar from "./components/NavigationBar/NavigationBar";
+import NavigationBar from './components/NavigationBar/NavigationBar';
 export default {
-  name: "App",
+  name: 'App',
   components: {
     NavigationBar,
   },
@@ -18,4 +18,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>
