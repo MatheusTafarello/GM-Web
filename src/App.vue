@@ -1,10 +1,14 @@
 <template>
-  <v-app>
-    <v-content>
-      <NavigationBar v-if="$route.name !== 'Login'" />
-      <router-view />
-    </v-content>
-  </v-app>
+  <div id="main-app">
+    <v-app>
+      <v-app-bar color="primary" app height="50">
+        <NavigationBar v-if="$route.name !== 'Login'" />
+      </v-app-bar>
+      <v-main id="main-view">
+        <router-view />
+      </v-main>
+    </v-app>
+  </div>
 </template>
 
 <script>
@@ -18,5 +22,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="css">
+html {
+  overflow-y: hidden !important;
+}
+#main-view {
+  margin-top: 50px;
+}
 </style>
