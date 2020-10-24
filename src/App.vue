@@ -1,10 +1,10 @@
 <template>
   <div id="main-app">
     <v-app>
-      <v-app-bar color="primary" app height="50">
-        <NavigationBar v-if="$route.name !== 'Login'" />
+      <v-app-bar v-if="validRoute" color="primary" app height="50">
+        <NavigationBar />
       </v-app-bar>
-      <v-main id="main-view">
+      <v-main :id="marginId">
         <router-view />
       </v-main>
     </v-app>
@@ -18,7 +18,15 @@ export default {
   components: {
     NavigationBar,
   },
-  // data: () => ({})
+  computed: {
+    validRoute() {
+      console.log(this.$route.name);
+      return this.$route.name !== 'Login';
+    },
+    marginId() {
+      return this.$route.name !== 'Login' ? 'main-view' : 'main';
+    },
+  },
 };
 </script>
 
