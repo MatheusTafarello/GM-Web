@@ -1,27 +1,56 @@
 <template>
   <div>
-    <gmap-map :center="center" :zoom="13" style="width: 100%; height: 78vh">
-      <gmap-marker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        @click="center = m.position"
-      ></gmap-marker>
-    </gmap-map>
+    <div style="height: 200px overflow: auto;">
+      <l-map :center="center" :zoom="13" style="width: 100%; height: 78vh">
+        <l-tile-layer :url="url" :attribution="attribution" />
+        <l-marker
+          :key="index"
+          v-for="(m, index) in markers"
+          :lat-lng="m.position"
+          :icon="m.icon"
+          @click="sendAssistedData(index)"
+        >
+          <!-- <l-popup>
+          </l-popup> -->
+        </l-marker>
+      </l-map>
+    </div>
   </div>
 </template>
 
 <script>
+import { eventBus } from '@/main.js';
+import { getLocalization } from '@/services/map.js';
+import { getOne } from '@/services/assisted.js';
+import { latLng, icon } from 'leaflet';
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import inactiveAssisted from '@/assets/inactiveAssisted.svg';
+import activeAssisted from '@/assets/activeAssisted.svg';
+import 'leaflet/dist/leaflet.css';
+
 export default {
-  name: 'GoogleMap',
+  name: 'MainMap',
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+  },
   data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: { lat: -23.183, lng: -46.881 },
-      markers: [{ lat: -23.183, lng: -46.881 }],
-      places: [],
-      currentPlace: null,
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      center: latLng(-23.183, -46.881),
+      inactiveIcon: icon({
+        iconUrl: inactiveAssisted,
+        iconSize: [32, 37],
+        iconAnchor: [16, 37],
+      }),
+      activeIcon: icon({
+        iconUrl: activeAssisted,
+        iconSize: [45, 47],
+        iconAnchor: [16, 37],
+      }),
+      markers: [],
     };
   },
 
@@ -29,30 +58,54 @@ export default {
     this.geolocate();
   },
 
+  async created() {
+    this.getCurrentPositions();
+    setInterval(() => {
+      this.getCurrentPositions();
+    }, 15 * 1000);
+  },
+
   methods: {
+    sendAssistedData(index) {
+      console.log(this.markers[index].info);
+      eventBus.$emit('assisted-clicked', this.markers[index].info);
+    },
+    async getCurrentPositions() {
+      let data = await getLocalization();
+      for (let i = 0; i < data.length; i++) {
+        let assistedInfo = await getOne(data[i].assistedId);
+        if (this.checkMarker(data[i])) {
+          this.markers.push({
+            position: [parseFloat(data[i].latitude), parseFloat(data[i].longitude)],
+            info: {
+              id: data[i].assistedId,
+              nome: assistedInfo.fullName,
+              cpf: assistedInfo.cpf,
+              lat: parseFloat(data[i].latitude),
+              lng: parseFloat(data[i].longitude),
+              actuation: data[i].actuation,
+            },
+            id: data[i].assistedId,
+            icon: data[i].actuation !== null ? this.activeIcon : this.inactiveIcon,
+          });
+          if (data[i].actuation !== null) {
+            this.center = latLng(parseFloat(data[i].longitude), parseFloat(data[i].latitude));
+          }
+        }
+      }
+    },
     geolocate() {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
+        this.center = latLng(position.coords.latitude, position.coords.longitude);
       });
     },
-    // receives a place object via the autocomplete component
-    setPlace(place) {
-      this.currentPlace = place;
-    },
-    addMarker() {
-      if (this.currentPlace) {
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-        };
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
+    checkMarker(marker) {
+      for (let index = 0; index < this.markers.length; index++) {
+        if (this.markers[index].id === marker.assistedId) {
+          return false;
+        }
       }
+      return true;
     },
   },
 };

@@ -2,16 +2,10 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-import * as VueGoogleMaps from "vue2-google-maps";
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: process.env.VUE_APP_KEY,
-    libraries: "places"
-  }
-})
 
 Vue.config.productionTip = false;
+
+export const eventBus = new Vue();
 
 new Vue({
   render: (h) => h(App),
