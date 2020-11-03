@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div style="height: 200px overflow: auto;">
-      <l-map :center="center" :zoom="13" style="width: 100%; height: 78vh">
+    <div style="height: 200px overflow: auto; z-index: 1">
+      <l-map :center="center" :zoom="13" style="width: 100%; height: 78vh; z-index: 1">
         <l-tile-layer :url="url" :attribution="attribution" />
         <l-marker
           :key="index"

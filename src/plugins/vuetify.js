@@ -12,7 +12,7 @@ export default new Vuetify({
         secondary: '#ddd',
         information: '#58b7fa',
         success: '#64bb4e',
-        warning: '#ffef61',
+        warning: '#FFEE58',
         danger: '#ff5858',
         dark: '#4a4a4a',
         light: '#e9e9e9',

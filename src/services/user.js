@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-export async function getUsers() {
+export async function getUsers(permissionId) {
   try {
-    const config = {
+    let config = {
       headers: { Authorization: localStorage.getItem("token") }
+    }
+    if(permissionId){
+      config.params = {permissionId};
     }
     const response = await axios.get(process.env.VUE_APP_API + 'admin/user', config)
     return response.data;

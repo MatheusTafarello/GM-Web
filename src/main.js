@@ -12,3 +12,4 @@ new Vue({
   vuetify,
   router,
 }).$mount("#app");
+

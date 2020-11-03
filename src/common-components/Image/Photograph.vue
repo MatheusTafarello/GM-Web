@@ -6,6 +6,7 @@
       :alt="source"
       :height="size"
       :width="size"
+      class="photo"
     />
   </div>
 </template>
@@ -19,7 +20,13 @@ export default {
     size: {
       type: String,
       default: 'auto',
-    },
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+.photo{
+  border-radius: 10px;
+}
+</style>

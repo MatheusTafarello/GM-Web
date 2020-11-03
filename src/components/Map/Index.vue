@@ -9,6 +9,7 @@
     <div class="map">
       <Maps />
     </div>
+    <div><Modal /></div>
     <div class="historic"><History /></div>
   </div>
 </template>
@@ -16,10 +17,12 @@
 <script>
 import History from './History/History';
 import Maps from './GoogleMaps/Maps';
+import Modal from './Modal/Modal';
 
 export default {
   components: {
     Maps,
+    Modal,
     History,
   },
 };
