@@ -31,9 +31,6 @@ export default {
 </script>
 
 <style lang="css">
-html {
-  overflow-y: hidden !important;
-}
 #main-view {
   margin-top: 50px;
 }
