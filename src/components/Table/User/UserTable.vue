@@ -9,7 +9,15 @@
             <td>{{ item.fullName }}</td>
             <td>{{ item.login }}</td>
             <td>{{ item.email }}</td>
-            <td>{{ item.permissionID }}</td>
+            <td>
+              {{
+                item.permissionId === 1
+                  ? 'Super Administrador'
+                  : item.perpermissionId === 2
+                  ? 'Administrator'
+                  : 'Patrulha'
+              }}
+            </td>
             <td>
               <v-btn @click="openPopup(item)" icon>
                 <v-icon>mdi-delete</v-icon>

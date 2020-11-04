@@ -66,7 +66,7 @@ export default {
   },
   data: () => ({
     vpassword: String,
-    form: { fullName: '', login: '', email: '', permissionID: '', password: '' },
+    form: { fullName: '', login: '', email: '', permissionId: '', password: '' },
     selectedPermission: '',
     routes: [
       { name: 'Pagina Inicial', route: 'home' },
@@ -92,9 +92,9 @@ export default {
   methods: {
     async sendForm() {
       if (this.selectedPermission == 'Adminstrador') {
-        this.form.permissionID = 2;
+        this.form.permissionId = 2;
       } else {
-        this.form.permissionID = 3;
+        this.form.permissionId = 3;
       }
       let status = await createUser(this.form);
       if (status) this.$router.push('/home');
