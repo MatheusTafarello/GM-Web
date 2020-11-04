@@ -14,3 +14,16 @@ export async function getMeasure(assistedId) {
       return Promise.reject(error)
     }
   }
+
+  export async function registerMeasure(measure){
+    try{
+        const config ={
+            headers: { Authorization: localStorage.getItem("token") }
+        }
+        let response = await axios.post(process.env.VUE_APP_API + "admin/measure/", measure, config);
+        return response;
+    }
+    catch(error){
+        return Promise.reject(error);
+    }
+}
