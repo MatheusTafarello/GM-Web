@@ -51,6 +51,7 @@ export default {
         iconAnchor: [16, 37],
       }),
       markers: [],
+      interval: null,
     };
   },
 
@@ -60,14 +61,13 @@ export default {
 
   async created() {
     this.getCurrentPositions();
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.getCurrentPositions();
     }, 15 * 1000);
   },
 
   methods: {
     sendAssistedData(index) {
-      console.log(this.markers[index].info);
       eventBus.$emit('assisted-clicked', this.markers[index].info);
     },
     async getCurrentPositions() {
@@ -107,6 +107,9 @@ export default {
       }
       return true;
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
   },
 };
 </script>

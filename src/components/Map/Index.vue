@@ -9,8 +9,10 @@
     <div class="map">
       <Maps />
     </div>
-    <div><Modal /></div>
-    <div class="historic"><History /></div>
+    <div class="historic">
+      <History />
+    </div>
+    <Modal />
   </div>
 </template>
 

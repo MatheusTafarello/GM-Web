@@ -1,48 +1,117 @@
 <template>
   <div class="containerCard elevation-2">
+    <Popup :dialog="openDialog" @confirm="closeCall" @cancel="openDialog = false" :type="type" />
     <div class="card">
-      <div class="informations">
-        <span class="textAssisted">{{ assisted.assistedName }}</span>
-        <span class="text">{{ assisted.activationTime }}</span>
+      <div class="image">
+        <img
+          v-if="this.assistedInformation.photograph"
+          :src="require(`@/../../GM-API/src/uploads/${this.assistedInformation.photograph}`)"
+          :alt="this.assistedInformation.photograph"
+          :height="60"
+          :width="60"
+          class="assisted-photograph"
+        />
       </div>
-      <div class="assistedPhoto"></div>
-    </div>
-    <div :class="['status', statusClass]">
-      <span class="statusText">{{ statusText }}</span>
-      <div class="iconAlert">
-        <v-icon :class="['alert', alertColor]" v-text="'mdi-alert-circle'" size="17px" />
+      <div class="name">{{ assistedInformation.fullName }}</div>
+      <div class="address">
+        <div v-if="address.length < 30">{{ address }}</div>
+        <div v-else>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">
+                {{ address.split(',', 3)[0] }}
+              </span>
+            </template>
+            <span>{{ address }}</span>
+          </v-tooltip>
+        </div>
+      </div>
+      <div class="status">
+        <span class="statusText">{{ statusText }}</span>
+      </div>
+      <div class="button">
+        <v-tooltip bottom color="dark">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" @click="openPopup(assisted)" icon small>
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+          <span>Encerrar chamado</span>
+        </v-tooltip>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getOne } from '@/services/assisted.js';
+import { getAddress } from '@/services/map.js';
+import Popup from '@/common-components/Popup/Popup.vue';
+import { closeActuation } from '@/services/actuation.js';
+
 export default {
   name: 'AssistedHistoryCard',
+  components: {
+    Popup,
+  },
 
   props: {
     assisted: {
       type: Object,
     },
+    assistedsLocation: {
+      type: Array,
+    },
   },
 
   data: () => ({
     dados: {},
+    assistedInformation: [],
+    address: '',
+    openDialog: false,
+    type: 'delete',
+    selectedCard: {},
   }),
-
   watch: {
     assisted: {
+      immediate: true,
       handler() {
-        console.log(this.assisted);
+        this.setComponent(this.assisted);
       },
     },
   },
 
-  methods: {},
+  methods: {
+    async setComponent(assisted) {
+      await this.getOneAssisted(assisted.assistedId);
+      await this.getFullAddress(assisted.latitude, assisted.longitude);
+    },
+
+    async getOneAssisted(id) {
+      this.assistedInformation = await getOne(id);
+    },
+
+    async getFullAddress(latitude, longitude) {
+      this.address = await getAddress({ latitude, longitude });
+    },
+
+    async closeCall() {
+      await closeActuation({
+        actuationId: this.selectedCard.actuation.id,
+        locationId: this.selectedCard.id,
+      });
+      this.$emit('closedActuation');
+      this.openDialog = false;
+    },
+    openPopup(assisted) {
+      this.selectedCard = assisted;
+      this.openDialog = true;
+    },
+  },
 
   computed: {
     statusClass() {
-      switch (this.assisted.status) {
+      switch (this.assisted.actuation.id) {
         case 1:
           return 'inProgress';
         case 2:
@@ -53,7 +122,7 @@ export default {
     },
 
     statusText() {
-      switch (this.assisted.status) {
+      switch (this.assisted.actuation.id) {
         case 1:
           return 'Em Progresso';
         case 2:
@@ -64,7 +133,7 @@ export default {
     },
 
     alertColor() {
-      switch (this.assisted.status) {
+      switch (this.assisted.actuation.id) {
         case 1:
           return 'inProgressAlert';
         case 2:
@@ -77,105 +146,66 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .containerCard {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 5px;
   width: 90%;
   height: 15%;
 }
-
-.containerCard .ghost {
-  position: absolute;
-  background: coral;
-}
-
-.containerCard .text {
-  font-size: 12px;
-}
-
-.containerCard .textAssisted {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.containerCard .card {
-  display: flex;
+.card {
+  display: grid;
   justify-content: space-between;
-  padding: 10px 15px;
-  align-items: center;
+  padding: 5px;
   width: 100%;
-}
+  height: 80px;
+  grid-template-columns: 1fr 2fr 0.3fr;
+  grid-template-areas:
+    'image name name'
+    'image address close'
+    'image content content';
 
-.card .informations {
-  display: flex;
-  flex-direction: column;
-}
-
-.containerCard .status {
-  display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 90%;
-  border-radius: 3px;
-  margin: 20px 0px 10px 0px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: image;
+  /* padding-left: 5px; */
+}
+.assisted {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+  align-self: center;
+}
+.name {
+  grid-area: name;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 12px;
+  grid-area: content;
+  color: #ff9e58;
+}
+
+.button {
+  grid-area: close;
+  align-self: center;
+}
+.address {
+  grid-area: address;
   font-size: 12px;
 }
 
-.containerCard .status .statusText {
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  margin-left: 5px;
-}
-
-.assistedPhoto {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #dadada;
-  margin-left: 20px;
-  height: 50px;
-  width: 50px;
-  border-radius: 10px;
-}
-
-.alert {
-  margin-right: 5px;
-  margin-bottom: 1px;
-}
-
-.iconAlert {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.inProgress {
-  background: #ff9e5871;
-  color: #ff9e58;
-}
-
-.inPanic {
-  background: #ff000073;
-  color: #db2d2d;
-}
-
-.closed {
-  background: #2d9bdb5d;
-  color: #2d9cdb;
-}
-
-.inProgressAlert {
-  color: #ff9e58;
-}
-
-.inPanicAlert {
-  color: #db2d2d;
-}
-
-.closedAlert {
-  color: #2d9cdb;
+.assisted-photograph {
+  border-radius: 50%;
 }
 </style>

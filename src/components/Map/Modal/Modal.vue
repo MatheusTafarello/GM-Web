@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="dialog" max-width="450" class="mapPopup">
-    <v-card class="body elevation-5" height="600">
+    <v-card class="body elevation-5">
       <div class="text-center pt-5 pb-5">
-        <Photograph :source="assisted.photograph" size="80px"/>
+        <Photograph :source="assisted.photograph" size="80px" />
         <div class="name font-weight-bold">{{ assisted.fullName }}</div>
         <div class="value">{{ address }}</div>
       </div>
@@ -13,15 +13,21 @@
           </v-btn>
           <div v-for="(item, id) in paginate" :key="id">
             <div class="text-center">
-               <Photograph :source="item.photograph" size="80px"/>
-              <div class="name font-weight-bold">{{item.fullName}}</div>
+              <Photograph :source="item.photograph" size="80px" />
+              <div class="name font-weight-bold">{{ item.fullName }}</div>
             </div>
             <div class="informations">
               <div class="value">Porte de arma:</div>
-              <div class="value font-weight-bold pl-1">{{item.hasGun ? 'Sim' : 'Não' }}</div>
+              <div class="value font-weight-bold pl-1">{{ item.hasGun ? 'Sim' : 'Não' }}</div>
             </div>
           </div>
-          <v-btn v-if="atEndOfList" color="primary" @click="moveCarousel('right')" icon :disabled="atEndOfList">
+          <v-btn
+            v-if="atEndOfList"
+            color="primary"
+            @click="moveCarousel('right')"
+            icon
+            :disabled="atEndOfList"
+          >
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </section>
@@ -126,6 +132,7 @@ export default {
 
     async openCall() {
       if (this.$refs.form.validate()) {
+        console.log(this.actuation);
         let obj = {
           actuationId: this.actuation.id,
           employeeId: this.employee,
@@ -156,7 +163,6 @@ export default {
         authors.push(val.author);
       });
       this.authors = authors;
-      console.log(this.authors);
     },
 
     actuationStatus() {
