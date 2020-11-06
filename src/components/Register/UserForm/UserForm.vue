@@ -98,9 +98,6 @@ export default {
       }
       let status = await createUser(this.form);
       if (status) this.$router.push('/home');
-
-      /* let status = await registerAuthor(fd)
-        if(status)this.$router.push('/home'); */
     },
   },
 };

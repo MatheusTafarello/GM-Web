@@ -6,7 +6,7 @@
       <AddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
-      <v-btn raised color="gray">Cancelar</v-btn>
+      <v-btn raised color="gray" @click="cancel">Cancelar</v-btn>
       <v-btn raised color="success" :loading="isLoading" @click="createAssisted">Criar</v-btn>
     </div>
   </div>
@@ -60,9 +60,14 @@ export default {
         }
         delete form.image;
 
-        registerAssisted(fd);
+        let status = registerAssisted(fd);
+        if (status) this.$router.push('/home');
       }
       this.isLoading = false;
+    },
+
+    cancel() {
+      this.$router.push('/home');
     },
   },
   components: {
