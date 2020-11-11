@@ -14,7 +14,7 @@
       <div class="font-weight-light">Funcionário</div>
     </Dropdown>
 
-    <v-btn text color="white" class="text-capitalize font-weight-light">
+    <v-btn text color="white" to="map" class="text-capitalize font-weight-light">
       <v-icon color="green" left>mdi-map</v-icon>Mapa
     </v-btn>
 
@@ -27,7 +27,7 @@
 
     <v-tooltip bottom color="dark">
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon color="accent" @click="leave()">
+        <v-btn v-on="on" class="leave-button" icon small color="accent" @click="leave()">
           <v-icon>mdi-door-open</v-icon>
         </v-btn>
       </template>
@@ -116,5 +116,8 @@ span {
   flex-direction: row;
   width: 100%;
   max-height: 100%;
+}
+.leave-button {
+  margin-top: 3px;
 }
 </style>

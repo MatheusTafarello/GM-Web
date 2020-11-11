@@ -21,18 +21,12 @@
               <div class="value font-weight-bold pl-1">{{ item.hasGun ? 'Sim' : 'Não' }}</div>
             </div>
           </div>
-          <v-btn
-            v-if="atEndOfList"
-            color="primary"
-            @click="moveCarousel('right')"
-            icon
-            :disabled="atEndOfList"
-          >
+          <v-btn v-if="atEndOfList" color="primary" @click="moveCarousel('right')" icon>
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </section>
       </div>
-      <v-form ref="form" class="pt-5">
+      <v-form v-if="showForm" ref="form" class="pt-5">
         <v-text-field
           label="Número T.A"
           v-model="taNumber"
@@ -50,13 +44,19 @@
           dense
           outlined
         ></v-select>
-        <v-textarea v-model="observation" outlined label="Observação" readonly height="100">
-        </v-textarea>
+        <v-textarea
+          v-if="actuation"
+          v-model="observation"
+          outlined
+          label="Observação"
+          readonly
+          height="100"
+        />
       </v-form>
-      <v-alert dense text type="info" :color="status.color">
+      <v-alert v-if="actuation" dense text type="info" :color="status.color">
         {{ status.text }}
       </v-alert>
-      <div class="text-center">
+      <div class="text-center" v-if="showForm">
         <v-btn depressed color="success" @click="openCall">Abrir Chamado</v-btn>
       </div>
     </v-card>
@@ -75,12 +75,12 @@ export default {
     Photograph,
   },
   data: () => ({
-    actuation: {},
+    actuation: null,
     assisted: {},
     authors: [],
     address: '',
     measurements: [],
-    status: { color: 'yellow darken-3', text: 'Chamado' },
+    status: { color: 'danger', text: 'Em pânico!' },
     dialog: false,
     employers: [],
     employee: '',
@@ -100,6 +100,17 @@ export default {
   created() {
     eventBus.$on('assisted-clicked', this.getMeasures);
     this.initialize();
+    this.calculate();
+  },
+  watch: {
+    dialog: {
+      handler() {
+        this.getMeasures();
+        if (!this.dialog) {
+          this.resetModal();
+        }
+      },
+    },
   },
   computed: {
     paginate() {
@@ -112,6 +123,12 @@ export default {
     atHeadOfList() {
       return this.currentPage === 1;
     },
+    showForm() {
+      if (this.actuation) {
+        return this.actuation.stateId == 1;
+      }
+      return false;
+    },
   },
   methods: {
     async initialize() {
@@ -119,8 +136,12 @@ export default {
     },
 
     async getMeasures(assisted) {
+      if (!assisted) return;
+      if (assisted.actuation) {
+        this.actuation = assisted.actuation;
+        this.actuationStatus();
+      }
       let { lat, lng } = assisted;
-      this.actuation = assisted.actuation;
       this.address = await getAddress({ latitude: lat, longitude: lng });
       this.measurements = await getMeasure(assisted.id);
       if (this.measurements.length) {
@@ -132,7 +153,6 @@ export default {
 
     async openCall() {
       if (this.$refs.form.validate()) {
-        console.log(this.actuation);
         let obj = {
           actuationId: this.actuation.id,
           employeeId: this.employee,
@@ -167,16 +187,13 @@ export default {
     },
 
     actuationStatus() {
-      let id = this.actuation.id ? this.actuation.id : 0;
-      switch (id) {
-        case 0:
-          this.status = { color: 'yellow darken-3', text: 'Chamado' };
-          break;
+      let state = this.actuation ? this.actuation.stateId : 0;
+      switch (state) {
         case 1:
-          this.status = { color: 'yellow darken-3', text: 'Chamado' };
+          this.status = { color: 'danger', text: 'Em pânico!' };
           break;
-        default:
-          this.status = { color: 'danger', text: 'Chamado' };
+        case 2:
+          this.status = { color: 'yellow darken-3', text: 'Em progresso' };
           break;
       }
     },
@@ -197,6 +214,13 @@ export default {
       this.employee = {};
       this.observation = '-';
       this.taNumber = '';
+    },
+    resetModal() {
+      this.actuation = null;
+      this.assisted = {};
+      this.authors = [];
+      this.address = '';
+      this.measurements = [];
     },
   },
 };
