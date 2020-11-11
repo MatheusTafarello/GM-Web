@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/main.js';
 import { getOne } from '@/services/assisted.js';
 import { getAddress } from '@/services/map.js';
 import Popup from '@/common-components/Popup/Popup.vue';
@@ -101,6 +102,7 @@ export default {
         locationId: this.selectedCard.id,
       });
       this.$emit('closedActuation');
+      eventBus.$emit('closed-actuation', this.selectedCard.actuation.id);
       this.openDialog = false;
     },
     openPopup(assisted) {

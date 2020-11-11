@@ -142,6 +142,7 @@ export default {
         let response = await openActuationCall(obj);
         if (response) {
           eventBus.$emit('update-historic');
+          eventBus.$emit('update-map', obj.actuationId);
           this.clearForm();
           this.dialog = false;
         }
