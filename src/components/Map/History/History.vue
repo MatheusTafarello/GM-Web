@@ -25,10 +25,15 @@ export default {
   },
   data: () => ({
     assistedsLocation: [],
+    interval: null,
+    time: 20000,
   }),
   created() {
     eventBus.$on('update-historic', this.initialize);
     this.initialize();
+    // this.interval = setInterval(async () => {
+    //   await this.initialize();
+    // }, this.time);
   },
   methods: {
     async initialize() {
@@ -43,6 +48,7 @@ export default {
   },
   beforeDestroy() {
     eventBus.$off('update-historic');
+    clearInterval(this.interval);
   },
 };
 </script>

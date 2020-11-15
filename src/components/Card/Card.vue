@@ -20,26 +20,26 @@
 
 <script>
 export default {
-  name: "Card",
+  name: 'Card',
 
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     picture: {
       type: String,
-      required: true
+      required: true,
     },
     route: {
-      type: String
+      type: String,
       /* required: true, */
-    }
+    },
   },
 
   data: () => ({
-    dados: {}
-  })
+    dados: {},
+  }),
 };
 </script>
 
@@ -101,7 +101,7 @@ body {
   padding-top: 65px;
 }
 
-.container button {
+.home button {
   width: 210px;
   height: 45px;
   border: 2px solid #23527c;
@@ -109,7 +109,7 @@ body {
   background: #ffff;
 }
 
-.container button span {
+.home button span {
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;

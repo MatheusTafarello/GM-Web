@@ -30,24 +30,32 @@
       <v-textarea
         height="100px"
         v-model="form.observation"
+        :rules="rules.observation"
         label="Descrição do caso"
         dense
         outlined
       />
       <div style="display: flex; flex-direction: row; justify-content: space-between">
-        <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
+        <input
+          style="display: none"
+          ref="imgInput"
+          type="file"
+          accept="image/*"
+          @change="loadFile"
+        />
         <div class="imgContainer">
           <img v-if="imgUrl" class="img" :src="imgUrl" @click="$refs.imgInput.click()" />
           <v-tooltip v-else bottom>
-            <template v-slot:activator="{on}">
+            <template v-slot:activator="{ on }">
               <v-btn v-on="on" icon @click="$refs.imgInput.click()">
-                <v-icon large :color="imgError ? 'error' : 'primary'">mdi-file-image-outline</v-icon>
+                <v-icon large :color="imgError ? 'error' : 'primary'"
+                  >mdi-file-image-outline</v-icon
+                >
               </v-btn>
             </template>
             <span>Upload image</span>
           </v-tooltip>
         </div>
-        
       </div>
     </v-form>
   </div>
@@ -63,18 +71,28 @@ export default {
       cpf: '',
       observation: '',
       photograph: null,
-      
     },
     rules: {
-      fullname: [(v) => !!v || 'O campo é obrigatório'],
-      cpf: [v => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || "CPF inválido!"],
+      fullname: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length < 255 || 'No máximo 255 caracteres',
+        (v) => /^([^0-9]*)$/.test(v) || 'Digitos não são aceitos',
+        (v) => /^[-+=(),'.a-zA-Z0-9]+$/.test(v) || 'Caracteres especiais não são aceitos',
+      ],
+      cpf: [(v) => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || 'CPF inválido!'],
       password: [
         (v) => !!v || 'O campo é obrigatório',
+        (v) => !v.includes(' ') || 'Não pode conter espaços',
+        (v) => v.length < 60 || 'No máximo 60 caracteres',
       ],
       phone: [(v) => !!v || 'O campo é obrigatório'],
       image: [
         (v) => !!v || 'Imagem obrigatoria',
         (v) => (v && v.length > 0) || 'Imagem obrigatória',
+      ],
+      observation: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length < 300 || 'No máximo 300 caracteres',
       ],
     },
 

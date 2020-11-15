@@ -1,7 +1,7 @@
 <template>
   <div class="form-measure">
     <FormHeader class="header" title="Cadastrar Medida" :list="routes" />
-    <MeasureForm class="container" @sendData="fetchData" />
+    <MeasureForm class="measure-form" @sendData="fetchData" />
     <div class="buttons">
       <v-btn raised color="gray" @click="cancel">Cancelar</v-btn>
       <v-btn raised color="success" :loading="isLoading" @click="createMeasure">Criar</v-btn>
@@ -56,27 +56,13 @@ export default {
 </script>
 
 <style scoped>
-.forms {
-  display: grid;
-  max-width: 100%;
-  min-height: 95%;
-  justify-content: center;
+.form-measure {
+  margin: 15px;
+}
+.header {
+  margin: 20px;
 }
 
-.desktop {
-  grid-template-columns: 50% 50%;
-}
-
-.mobile {
-  grid-template-rows: repeat(auto, 3);
-  grid-template-columns: 1fr;
-}
-
-.container {
-  width: 80%;
-  margin-top: 20px;
-  padding: 0;
-}
 .buttons {
   display: flex;
   justify-content: space-around;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home">
     <div v-for="info in cardInfo" :key="info.title">
       <Card :title="info.title" :picture="info.picture" :route="info.url" />
     </div>
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.home {
   display: grid;
   /* grid-template-columns: repeat(2, 25%); */
   grid-template-columns: repeat(auto-fit, minmax(250px, 300px));

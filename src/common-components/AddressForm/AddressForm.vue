@@ -104,10 +104,22 @@ export default {
         (v) => !isNaN(v) || 'Deve ser um número',
         (v) => v.length <= 5 || 'No máximo 5 digitos',
       ],
-      street: [(v) => !!v || 'O campo é obrigatório'],
-      district: [(v) => !!v || 'O campo é obrigatório'],
-      state: [(v) => !!v || 'O campo é obrigatório'],
-      city: [(v) => !!v || 'O campo é obrigatório'],
+      street: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length <= 300 || 'No máximo 300 digitos',
+      ],
+      district: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length <= 60 || 'No máximo 60 caracteres',
+      ],
+      state: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length <= 5 || 'No máximo 5 caracteres',
+      ],
+      city: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length <= 20 || 'No máximo 20 caracteres',
+      ],
     },
   }),
   watch: {

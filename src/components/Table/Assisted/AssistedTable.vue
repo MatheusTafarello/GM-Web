@@ -1,17 +1,18 @@
 <template>
   <div id="content">
-    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type"/>
+    <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type" />
     <FormHeader
       class="header"
       title="Assistidas"
       subTitle=" - Lista de Assistidas Cadastradas"
       :list="route"
     ></FormHeader>
-    <div class="table">
-      <v-data-table :headers="headers" :items="assisteds" class="elevation-1">
+    <v-card class="table">
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Busca"></v-text-field>
+      <v-data-table :headers="headers" :items="assisteds" :search="search">
         <template v-slot:body="{ items }">
           <tr v-for="item in items" :key="item.cpf">
-            <td>{{item.fullName}}</td>
+            <td>{{ item.fullName }}</td>
             <td>{{ item.cpf }}</td>
             <td>
               <v-btn @click="openPopup(item)" icon>
@@ -21,7 +22,7 @@
           </tr>
         </template>
       </v-data-table>
-    </div>
+    </v-card>
   </div>
 </template>
 <script>
@@ -46,9 +47,10 @@ export default {
         { text: 'CPF', value: 'cpf', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
+      search: '',
       openDialog: false,
       selected: {},
-      type: "delete"
+      type: 'delete',
     };
   },
   created() {

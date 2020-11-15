@@ -10,6 +10,7 @@
           :height="60"
           :width="60"
           class="assisted-photograph"
+          @click="openModal(assisted)"
         />
       </div>
       <div class="name">{{ assistedInformation.fullName }}</div>
@@ -27,7 +28,7 @@
         </div>
       </div>
       <div class="status">
-        <span class="statusText">{{ statusText }}</span>
+        <span class="statusText">Chamado em Progresso</span>
       </div>
       <div class="button">
         <v-tooltip bottom color="dark">
@@ -109,39 +110,26 @@ export default {
       this.selectedCard = assisted;
       this.openDialog = true;
     },
+    openModal(actuation) {
+      const { assistedId, assisted, latitude, longitude } = actuation;
+      const obj = {
+        lat: latitude,
+        lng: longitude,
+        id: assistedId,
+        nome: assisted.name,
+      };
+      eventBus.$emit('assisted-clicked', obj);
+    },
   },
 
   computed: {
-    statusClass() {
-      switch (this.assisted.actuation.id) {
-        case 1:
-          return 'inProgress';
-        case 2:
-          return 'inPanic';
-        default:
-          return 'closed';
-      }
-    },
-
     statusText() {
-      switch (this.assisted.actuation.id) {
+      let state = this.assisted.actuation ? this.assisted.actuation.stateId : 0;
+      switch (state) {
         case 1:
-          return 'Em Progresso';
-        case 2:
           return 'Em Pânico';
         default:
-          return 'Chamado Fechado';
-      }
-    },
-
-    alertColor() {
-      switch (this.assisted.actuation.id) {
-        case 1:
-          return 'inProgressAlert';
-        case 2:
-          return 'inPanicAlert';
-        default:
-          return 'closedAlert';
+          return 'Chamado em Progresso';
       }
     },
   },
@@ -177,8 +165,8 @@ export default {
   justify-content: center;
   align-items: center;
   grid-area: image;
-  /* padding-left: 5px; */
 }
+
 .assisted {
   border-radius: 50%;
   width: 50px;
@@ -209,5 +197,6 @@ export default {
 
 .assisted-photograph {
   border-radius: 50%;
+  cursor: pointer;
 }
 </style>

@@ -2,8 +2,9 @@
   <div id="content">
     <Popup :dialog="openDialog" @confirm="deleteItem" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Usuários" :list="route"></FormHeader>
-    <div class="table">
-      <v-data-table :headers="headers" :items="users" class="elevation-1">
+    <v-card class="table">
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Busca"></v-text-field>
+      <v-data-table :headers="headers" :items="users" :search="search">
         <template v-slot:body="{ items }">
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.fullName }}</td>
@@ -26,7 +27,7 @@
           </tr>
         </template>
       </v-data-table>
-    </div>
+    </v-card>
   </div>
 </template>
 <script>
@@ -53,6 +54,7 @@ export default {
         { text: 'Permissão', value: 'permission', sortable: false },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
+      search: '',
       openDialog: false,
       selected: {},
       type: 'delete',
@@ -80,7 +82,7 @@ export default {
 </script>
 <style scoped>
 #content {
-  padding: 1% 3%;
+  padding: 0 3%;
 }
 .header {
   margin-top: 80px;

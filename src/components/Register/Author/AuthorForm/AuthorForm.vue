@@ -20,24 +20,39 @@
         dense
         outlined
       />
-      <v-textarea height="100px" v-model="form.observation" label="Observação" dense outlined @input="sendData()"/>
+      <v-textarea
+        height="100px"
+        v-model="form.observation"
+        :rules="rules.observation"
+        label="Observação"
+        dense
+        outlined
+        @input="sendData()"
+      />
 
-      <div style="display:flex; align-items: center">
-        <v-text-field v-model="form.dvc" dense outlined label="DVC" :rules="rules.dvc" @input="sendData()"/>
+      <div style="display: flex; align-items: center">
+        <v-text-field
+          v-model="form.dvc"
+          dense
+          outlined
+          label="DVC"
+          :rules="rules.dvc"
+          @input="sendData()"
+        />
         <v-checkbox
           v-model="form.hasGun"
           label="Porte de arma?"
-          style="margin:0px 15px; padding:0"
+          style="margin: 0px 15px; padding: 0"
           @input="sendData()"
-           true-value="true" 
-           false-value="false"
+          true-value="true"
+          false-value="false"
         />
       </div>
       <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
       <div class="imgContainer">
         <img v-if="imgUrl" class="img" :src="imgUrl" @click="$refs.imgInput.click()" />
         <v-tooltip v-else bottom>
-          <template v-slot:activator="{on}">
+          <template v-slot:activator="{ on }">
             <v-btn v-on="on" icon @click="$refs.imgInput.click()">
               <v-icon large :color="imgError ? 'error' : 'primary'">mdi-file-image-outline</v-icon>
             </v-btn>
@@ -54,25 +69,37 @@ export default {
   data: () => ({
     form: {
       authorValid: false,
-      fullName: "",
-      cpf: "",
-      observation: "",
-      dvc: "",
+      fullName: '',
+      cpf: '',
+      observation: '',
+      dvc: '',
       hasGun: false,
-      image: null
+      image: null,
     },
     rules: {
-      fullName: [v => !!v || "O campo é obrigatório"],
-      cpf: [v => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || "CPF inválido!"],
-      dvc: [v => !!v || "O campo é obrigatório"],
+      fullName: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length < 255 || 'No máximo 255 caracteres',
+        (v) => /^([^0-9]*)$/.test(v) || 'Digitos não são aceitos',
+        (v) => /^[-+=(),'.a-zA-Z0-9]+$/.test(v) || 'Caracteres especiais não são aceitos',
+      ],
+      cpf: [(v) => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || 'CPF inválido!'],
+      dvc: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length < 60 || 'No máximo 60 caracteres',
+      ],
       image: [
-        v => !!v || "Imagem obrigatoria",
-        v => (v && v.length > 0) || "Imagem obrigatória"
-      ]
+        (v) => !!v || 'Imagem obrigatoria',
+        (v) => (v && v.length > 0) || 'Imagem obrigatória',
+      ],
+      observation: [
+        (v) => !!v || 'O campo é obrigatório',
+        (v) => v.length < 300 || 'No máximo 300 caracteres',
+      ],
     },
 
     imgUrl: null,
-    imgError: false
+    imgError: false,
   }),
   watch: {
     form: {
@@ -81,12 +108,12 @@ export default {
           this.sendData();
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     sendData() {
-      this.$emit("sendData", this.form);
+      this.$emit('sendData', this.form);
     },
     loadFile(e) {
       if (e.target.files[0]) {
@@ -98,15 +125,15 @@ export default {
       }
     },
     formatCPF(cpf) {
-      if (cpf.length === 11 && !cpf.includes(".")) {
-        cpf = cpf.replace(/\D/g, "");
-        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
-        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
-        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      if (cpf.length === 11 && !cpf.includes('.')) {
+        cpf = cpf.replace(/\D/g, '');
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         this.form.cpf = cpf;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

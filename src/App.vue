@@ -4,9 +4,9 @@
       <v-app-bar v-if="validRoute" color="primary" app height="50">
         <NavigationBar />
       </v-app-bar>
-      <v-main :id="marginId">
+      <div :style="style">
         <router-view />
-      </v-main>
+      </div>
     </v-app>
   </div>
 </template>
@@ -20,11 +20,14 @@ export default {
   },
   computed: {
     validRoute() {
-      console.log(this.$route.name);
       return this.$route.name !== 'Login';
     },
-    marginId() {
-      return this.$route.name !== 'Login' ? 'main-view' : 'main';
+    style() {
+      let obj = {};
+      if (process.env.NODE_ENV == 'development') {
+        obj = { marginTop: '50px' };
+      }
+      return obj;
     },
   },
 };
@@ -32,6 +35,6 @@ export default {
 
 <style lang="css">
 #main-view {
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 </style>

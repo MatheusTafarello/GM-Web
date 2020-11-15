@@ -87,6 +87,7 @@ template {
   box-shadow: 2px 11px 19px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   display: flex;
+  margin: auto;
 }
 .box {
   display: flex;

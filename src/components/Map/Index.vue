@@ -4,7 +4,7 @@
       <h2 class="display-1">Monitoramento de Assistidas</h2>
     </div>
     <div class="historic-title">
-      <h2 class="display-1">Histórico</h2>
+      <h2 class="display-1">Chamados</h2>
     </div>
     <div class="map">
       <Maps />
