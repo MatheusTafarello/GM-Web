@@ -100,7 +100,6 @@ export default {
   created() {
     eventBus.$on('assisted-clicked', this.getMeasures);
     this.initialize();
-    this.calculate();
   },
   watch: {
     dialog: {
@@ -111,6 +110,11 @@ export default {
         }
       },
     },
+    authors:{
+      handler(){
+        this.calculate();
+      }
+    }
   },
   computed: {
     paginate() {
