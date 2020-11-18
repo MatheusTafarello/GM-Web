@@ -14,7 +14,7 @@
               {{
                 item.permissionId === 1
                   ? 'Super Administrador'
-                  : item.perpermissionId === 2
+                  : item.permissionId == 2
                   ? 'Administrator'
                   : 'Patrulha'
               }}
