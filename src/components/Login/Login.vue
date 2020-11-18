@@ -70,6 +70,7 @@ template {
   );
 }
 .Login {
+  margin-top: -50px;
   background: linear-gradient(
     180deg,
     #a1c4e6 0%,

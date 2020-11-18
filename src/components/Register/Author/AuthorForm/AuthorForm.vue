@@ -81,7 +81,7 @@ export default {
         (v) => !!v || 'O campo é obrigatório',
         (v) => v.length < 255 || 'No máximo 255 caracteres',
         (v) => /^([^0-9]*)$/.test(v) || 'Digitos não são aceitos',
-        (v) => /^[-+=(),'.a-zA-Z0-9]+$/.test(v) || 'Caracteres especiais não são aceitos',
+        // (v) => /^[-+=(),'.a-zA-Z0-9]+$/.test(v) || 'Caracteres especiais não são aceitos',
       ],
       cpf: [(v) => /^((\d{3}.\d{3}.\d{3}-\d{2}))$/.test(v) || 'CPF inválido!'],
       dvc: [

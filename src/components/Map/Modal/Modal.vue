@@ -3,8 +3,30 @@
     <v-card class="body elevation-5">
       <div class="text-center pt-5 pb-5">
         <Photograph :source="assisted.photograph" size="80px" />
-        <div class="name font-weight-bold">{{ assisted.fullName }}</div>
-        <div class="value">{{ address }}</div>
+        <div class="font-weight-bold">{{ assisted.fullName }}</div>
+        <div>
+          <div class="localization">
+            <v-btn
+              depressed
+              text
+              tile
+              :class="['item', selectedAddress == 'localization' ? 'green--text' : '']"
+              @click="selectedAddress = 'localization'"
+            >
+              Localização Atual
+            </v-btn>
+            <v-btn
+              depressed
+              text
+              tile
+              :class="['item', selectedAddress == 'address' ? 'green--text' : '']"
+              @click="selectedAddress = 'address'"
+            >
+              Endereço
+            </v-btn>
+          </div>
+          <div class="value">{{ addressOrLocalization }}</div>
+        </div>
       </div>
       <div>
         <section class="author-camp">
@@ -67,6 +89,7 @@ import { eventBus } from '@/main.js';
 import { getMeasure } from '@/services/measure.js';
 import { getUsers } from '@/services/user.js';
 import { getAddress } from '@/services/map.js';
+import { getOne } from '@/services/assisted.js';
 import { openActuationCall } from '@/services/actuation.js';
 import Photograph from '@/common-components/Image/Photograph.vue';
 
@@ -77,8 +100,10 @@ export default {
   data: () => ({
     actuation: null,
     assisted: {},
+    assistedAddress: null,
     authors: [],
     address: '',
+    selectedAddress: 'localization',
     measurements: [],
     status: { color: 'danger', text: 'Em pânico!' },
     dialog: false,
@@ -110,13 +135,23 @@ export default {
         }
       },
     },
-    authors:{
-      handler(){
+    authors: {
+      handler() {
         this.calculate();
-      }
-    }
+      },
+    },
   },
   computed: {
+    addressOrLocalization() {
+      if (this.selectedAddress == 'localization') {
+        return this.address;
+      }
+      if (this.assistedAddress) {
+        let { street, number, district, city, state, cep } = this.assistedAddress;
+        return `${street}, ${number} - ${district}, ${city} - ${state}, ${cep}`;
+      }
+      return '---';
+    },
     paginate() {
       let index = this.currentPage * this.itemsPerPage - this.itemsPerPage;
       return this.authors.slice(index, index + this.itemsPerPage);
@@ -148,6 +183,8 @@ export default {
       let { lat, lng } = assisted;
       this.address = await getAddress({ latitude: lat, longitude: lng });
       this.measurements = await getMeasure(assisted.id);
+      let data = await getOne(assisted.id);
+      this.assistedAddress = data.assistedAddresses[0];
       if (this.measurements.length) {
         this.setAssisted();
         this.setAuthor();
@@ -225,6 +262,8 @@ export default {
       this.authors = [];
       this.address = '';
       this.measurements = [];
+      this.assistedAddress = null;
+      this.selectedAddress = 'localization';
     },
   },
 };
@@ -235,6 +274,18 @@ export default {
 }
 .value {
   color: #828282;
+}
+
+.item {
+  cursor: pointer;
+  color: #4f4f4f;
+}
+.localization {
+  margin-top: 5px;
+  width: 100%;
+  display: grid;
+  grid-template: auto / 50% 50%;
+  justify-content: space-around;
 }
 
 .v-select {
