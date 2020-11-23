@@ -30,7 +30,8 @@
       </div>
       <div>
         <section class="author-camp">
-          <v-btn @click="moveCarousel('left')" icon :disabled="atHeadOfList">
+          <div v-if="atHeadOfList"></div>
+          <v-btn v-else @click="moveCarousel('left')" icon small>
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
           <div v-for="(item, id) in paginate" :key="id">
@@ -43,7 +44,7 @@
               <div class="value font-weight-bold pl-1">{{ item.hasGun ? 'Sim' : 'Não' }}</div>
             </div>
           </div>
-          <v-btn v-if="atEndOfList" color="primary" @click="moveCarousel('right')" icon>
+          <v-btn v-if="atEndOfList" color="primary" @click="moveCarousel('right')" icon small>
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </section>
