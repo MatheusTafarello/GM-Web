@@ -2,7 +2,8 @@
   <v-dialog v-model="dialog" max-width="450" class="mapPopup">
     <v-card class="body elevation-5">
       <div class="text-center pt-5 pb-5">
-        <Photograph :source="assisted.photograph" size="80px" />
+        <Picture :itemId="assisted.id" :config="{ height: '80px', width: '80px' }" />
+
         <div class="font-weight-bold">{{ assisted.fullName }}</div>
         <div>
           <div class="localization">
@@ -36,7 +37,11 @@
           </v-btn>
           <div v-for="(item, id) in paginate" :key="id">
             <div class="text-center">
-              <Photograph :source="item.photograph" size="80px" />
+              <Picture
+                :itemId="item.id"
+                type="author"
+                :config="{ height: '80px', width: '80px' }"
+              />
               <div class="name font-weight-bold">{{ item.fullName }}</div>
             </div>
             <div class="informations">
@@ -92,11 +97,11 @@ import { getUsers } from '@/services/user.js';
 import { getAddress } from '@/services/map.js';
 import { getOne } from '@/services/assisted.js';
 import { openActuationCall } from '@/services/actuation.js';
-import Photograph from '@/common-components/Image/Photograph.vue';
+import Picture from '@/common-components/Image/Picture.vue';
 
 export default {
   components: {
-    Photograph,
+    Picture,
   },
   data: () => ({
     actuation: null,
@@ -124,6 +129,7 @@ export default {
   }),
 
   created() {
+    eventBus.$off('assisted-clicked');
     eventBus.$on('assisted-clicked', this.getMeasures);
     this.initialize();
   },
@@ -266,6 +272,9 @@ export default {
       this.assistedAddress = null;
       this.selectedAddress = 'localization';
     },
+  },
+  beforeDestroy() {
+    eventBus.$off('assisted-clicked');
   },
 };
 </script>

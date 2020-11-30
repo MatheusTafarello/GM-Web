@@ -2,15 +2,12 @@
   <div class="containerCard elevation-2">
     <Popup :dialog="openDialog" @confirm="closeCall" @cancel="openDialog = false" :type="type" />
     <div class="card">
-      <div class="image">
-        <img
-          v-if="this.assistedInformation.photograph"
-          :src="require(`@/../../GM-API/src/uploads/${this.assistedInformation.photograph}`)"
-          :alt="this.assistedInformation.photograph"
-          :height="60"
-          :width="60"
+      <div class="image" @click="openModal(assisted)">
+        <Picture
+          v-if="this.assistedInformation"
+          :itemId="assisted.id"
+          :config="{ height: '60px', width: '60px', borderRadius: '50%' }"
           class="assisted-photograph"
-          @click="openModal(assisted)"
         />
       </div>
       <div class="name">{{ assistedInformation.fullName }}</div>
@@ -50,11 +47,13 @@ import { getOne } from '@/services/assisted.js';
 import { getAddress } from '@/services/map.js';
 import Popup from '@/common-components/Popup/Popup.vue';
 import { closeActuation } from '@/services/actuation.js';
+import Picture from '@/common-components/Image/Picture.vue';
 
 export default {
   name: 'AssistedHistoryCard',
   components: {
     Popup,
+    Picture,
   },
 
   props: {
@@ -165,6 +164,7 @@ export default {
   justify-content: center;
   align-items: center;
   grid-area: image;
+  margin-top: 4px;
 }
 
 .assisted {
@@ -196,7 +196,6 @@ export default {
 }
 
 .assisted-photograph {
-  border-radius: 50%;
   cursor: pointer;
 }
 </style>

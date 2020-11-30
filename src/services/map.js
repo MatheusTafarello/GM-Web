@@ -23,6 +23,10 @@ export async function getAddress({ latitude, longitude }) {
       }
     }
     let response = await axios.get(process.env.VUE_APP_GEOCODING_API, config)
+    if (response.data.error_message) {
+      console.error(response.data.error_message);
+      return "-"
+    }
     return response.data.results[0].formatted_address;
   } catch (error) {
     return Promise.reject(error);
