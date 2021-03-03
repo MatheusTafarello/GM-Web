@@ -18,7 +18,7 @@
 
 <script>
 import History from './History/History';
-import Maps from './GoogleMaps/Maps';
+import Maps from './LeafletMaps/Maps';
 import Modal from './Modal/Modal';
 
 export default {

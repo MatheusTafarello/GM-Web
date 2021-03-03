@@ -1,6 +1,6 @@
 <template>
-  <div class="Login primary">
-    <v-card class="container" min-width="200" max-width="800">
+  <div class="Login">
+    <v-card class="container-login" min-width="200" max-width="800">
       <div>
         <img class="imgLogin" src="@/assets/imagemLogin.jpg" />
       </div>
@@ -70,7 +70,6 @@ template {
   );
 }
 .Login {
-  margin-top: -50px;
   background: linear-gradient(
     180deg,
     #a1c4e6 0%,
@@ -79,10 +78,10 @@ template {
   );
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 }
-.container {
+.container-login {
   padding: 80px 22px;
   height: 460px;
   box-shadow: 2px 11px 19px rgba(0, 0, 0, 0.5);
