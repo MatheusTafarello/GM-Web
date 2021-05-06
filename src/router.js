@@ -7,10 +7,11 @@ import Login from "@/components/Login/Login.vue";
 import Dashboard from "@/components/Dashboard/Dashboard.vue";
 import RegisterAuthor from "@/components/Register/Author/RegisterAuthor.vue"
 import RegisterAssisted from "@/components/Register/Assisted/RegisterAssisted.vue"
+import RegisterUser from "@/components/Register/UserForm/UserForm.vue"
+import EditAssisted from "@/components/Table/Assisted/EditAssisted.vue"
 import AssistedTable from "@/components/Table/Assisted/AssistedTable.vue"
 import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 import UserTable from "@/components/Table/User/UserTable.vue"
-import RegisterUser from "@/components/Register/UserForm/UserForm.vue"
 import Map from "@/components/Map/Index.vue";
 import RegisterMeasure from "@/components/Register/ProtectiveMeasure/RegisterMeasure.vue"
 
@@ -54,6 +55,11 @@ export default new Router({
       path: "/manage_assisteds",
       beforeEnter: loggedInGuard,
       component: AssistedTable
+    },
+    {
+      path: "/edit_assisted",
+      beforeEnter: loggedInGuard,
+      component: EditAssisted
     },
     {
       path: "/manage_authors",

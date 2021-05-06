@@ -15,8 +15,11 @@
             <td>{{ item.fullName }}</td>
             <td>{{ item.cpf }}</td>
             <td>
-              <v-btn @click="openPopup(item)" icon>
+              <v-btn id='delete' @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
+              </v-btn>
+              <v-btn id='edit' @click=router-link :to ="{ path: '/EditAssisted' }" icon>
+                <v-icon>mdi-account-edit</v-icon> 
               </v-btn>
             </td>
           </tr>
@@ -40,11 +43,13 @@ export default {
       assisteds: [],
       route: [
         { name: 'Página Inicial', route: 'home' },
-        { name: 'Gerenciar Assistidas', route: 'manage_assisteds' },
+        { name: 'Gerenciar Assistidas', route:''},
+        { name: '', route: 'EditAssisted' }
       ],
       headers: [
         { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },
         { text: 'CPF', value: 'cpf', sortable: false },
+       // { text: 'Autor', value: 'author', shortable: true },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
       search: '',
@@ -52,6 +57,7 @@ export default {
       selected: {},
       type: 'delete',
     };
+    
   },
   created() {
     this.initialize();
@@ -61,7 +67,7 @@ export default {
       this.assisteds = await getAssisteds();
     },
 
-    openPopup(item) {
+    openPopupItem(item) {
       this.selected = item;
       this.openDialog = true;
     },

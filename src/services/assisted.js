@@ -41,11 +41,16 @@ export async function deleteAssisted(id) {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    await axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, config);
+    let response = await axios.delete(process.env.VUE_APP_API + "admin/assisted/" + id, config);
+    return response;
   } catch (error) {
     return Promise.reject(error)
   }
 }
+
+// export async function editAssisted(){
+
+// }
 
 export async function registerAssisted(payload) {
   try {

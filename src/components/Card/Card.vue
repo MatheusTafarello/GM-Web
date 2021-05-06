@@ -47,7 +47,7 @@ export default {
 /* body style */
 
 body {
-  background: #f5f7fb;
+  background: #fbf5f5;
 }
 
 /* card styles */

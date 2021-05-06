@@ -16,9 +16,20 @@
             <td>{{ item.cpf }}</td>
             <td>{{ item.dvc }}</td>
             <td>
-              <v-btn @click="openPopup(item)" icon>
+              <v-btn @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
+              <v-btn @click="openPopupEdit(edit)" icon>
+                <v-icon>mdi-account-edit</v-icon> 
+              </v-btn>
+
+              <!-- <v-btn @click="$vm2.open('modal-5')" icon>
+                  <modal-vue @on-close="$vm2.close('modal-5')"
+                              name="modal-5"
+                              modalSize="full-hw">
+                  </modal-vue>
+                </v-btn> -->
+
             </td>
           </tr>
         </template>
@@ -26,6 +37,7 @@
     </v-card>
   </div>
 </template>
+
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
 import Popup from '@/common-components/Popup/Popup.vue';
@@ -62,7 +74,8 @@ export default {
     async initialize() {
       this.authors = await getAuthors();
     },
-    openPopup(item) {
+    openPopupItem(item) {
+      this.type='delete';
       this.selected = item;
       this.openDialog = true;
     },
@@ -71,6 +84,11 @@ export default {
       this.authors = [];
       await this.initialize();
       this.openDialog = false;
+    },
+    openPopupEdit(edit){
+      this.type='editAuthor';
+      this.selected = edit;
+      this.openDialog = true;
     },
   },
 };

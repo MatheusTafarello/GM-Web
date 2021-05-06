@@ -20,8 +20,11 @@
               }}
             </td>
             <td>
-              <v-btn @click="openPopup(item)" icon>
+              <v-btn id='delete' @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
+              </v-btn>
+              <v-btn id='edit' @click="openPopupEdit(edit)" icon>
+                <v-icon>mdi-cogs</v-icon>
               </v-btn>
             </td>
           </tr>
@@ -67,7 +70,8 @@ export default {
     async initialize() {
       this.users = await getUsers();
     },
-    openPopup(item) {
+    openPopupItem(item) {
+      this.type='delete';
       this.selected = item;
       this.openDialog = true;
     },
@@ -76,6 +80,11 @@ export default {
       await deleteUser(this.selected.id);
       await this.initialize();
       this.openDialog = false;
+    },
+    openPopupEdit(edit){
+      this.type='editUser';
+      this.selected = edit;
+      this.openDialog = true;
     },
   },
 };

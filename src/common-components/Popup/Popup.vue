@@ -43,8 +43,14 @@ export default {
           return 'Sucesso!';
         case 'error':
           return 'Erro';
-        default: 
-          return 'Confirmado'
+        case 'editAuthor':
+          return 'Autor editado com sucesso!';
+        case 'editAssisted':
+          return 'Assistida editada com sucesso!';
+        case 'editUser':
+          return 'Usuário editado com sucesso!';
+        default:
+          return 'Confirmado';
       }
     },
     color() {
@@ -91,4 +97,10 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+/* .Edição {
+   width: 90%;
+   height: 90%;
+
+} */
 </style>

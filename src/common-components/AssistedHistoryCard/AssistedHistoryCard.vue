@@ -30,7 +30,7 @@
       <div class="button">
         <v-tooltip bottom color="dark">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" @click="openPopup(assisted)" icon small>
+            <v-btn v-on="on" @click="openPopupItem(assisted)" icon small>
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </template>
