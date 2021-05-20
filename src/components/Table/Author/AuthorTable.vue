@@ -19,17 +19,9 @@
               <v-btn @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn @click="openPopupEdit(edit)" icon>
+              <v-btn @click=router-link :to ="{ path: '/edit_author' }" icon>
                 <v-icon>mdi-account-edit</v-icon> 
               </v-btn>
-
-              <!-- <v-btn @click="$vm2.open('modal-5')" icon>
-                  <modal-vue @on-close="$vm2.close('modal-5')"
-                              name="modal-5"
-                              modalSize="full-hw">
-                  </modal-vue>
-                </v-btn> -->
-
             </td>
           </tr>
         </template>
@@ -93,6 +85,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 #content {
   padding: 1% 3%;

@@ -1,28 +1,28 @@
 <template>
-  <div class="assisted-form">
+  <div class="author-form">
     <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
-    <FormHeader class="header" title="Editar Assistida" subTitle :list="routes" />
+    <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
-      <AssistedForm class="container" @sendData="fetchData" />
+      <AuthorForm class="container" @sendData="fetchData" />
       <AddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
       <v-btn 
-      class="btn" 
-      raised 
-      color="gray" 
-      @click="cancel"
-      >
-      Cancelar
+        class="btn" 
+        raised 
+        color="gray" 
+        @click="cancel"
+    >
+    Cancelar
       </v-btn>
 
       <v-btn 
-      class="btn" 
-      raised 
-      color="success" 
-      :loading="isLoading" 
-      @click="editAssisted, openPopupEdit(edit)"
+        class="btn" 
+        raised 
+        color="success" 
+        :loading="isLoading" 
+        @click="editAuthor, openPopupEdit(edit)"
       >
       Concluir
       </v-btn>
@@ -32,39 +32,43 @@
 </template> 
 
 <script>
-import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
+import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import Popup from '@/common-components/Popup/Popup.vue';
-import AddressForm from '@/common-components/AddressForm/AddressForm.vue';
-import AssistedForm from '../../Register/Assisted/AssistedForm/AssistedForm.vue';
-import { editAssisted } from '@/services/assisted.js';
+import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
+import AuthorForm from "../../Register/Author/AuthorForm/AuthorForm.vue";
+import { editAuthor } from "@/services/author.js";
 
 export default {
   data: () => ({
     routes: [
-      { name: 'Pagina Inicial', route: 'home' },
-      { name: 'Gerenciar Assistida', route: 'edit_assisted' },
+      { name: "Pagina Inicial", route: "home" },
+      { name: "Autor", route: "edit_author" }
     ],
     form: {},
-    isLoading: false,
     openDialog: false,
+    isLoading: false,
     type: 'delete'
   }),
+
   methods: {
     fetchData(form) {
-      Object.keys(form).map((key) => {
+      Object.keys(form).map(key => {
         this.form[key] = form[key];
       });
+      
     },
-    async editAssisted() {
-      const { assistedValid, addressValid } = this.form;
+    async editAuthor() {
+      const { authorValid, addressValid } = this.form;
+      
       const form = { ...this.form };
-      this.isLoading = true;
-      if (assistedValid && addressValid) {
+
+      if (authorValid && addressValid) {
+        this.isLoading = true;
         const fd = new FormData();
-        fd.append('photograph', form.image, 'assistedPhoto.jpg');
-        for (const field in form) { 
+        fd.append('photograph', form.image, 'authorPhoto.jpg');
+        for (const field in form) {
           if (
-            field === 'assistedValid' ||
+            field === 'authorValid' ||
             field === 'addressValid' ||
             field === 'image' ||
             field === 'photograph'
@@ -82,32 +86,33 @@ export default {
         }
         delete form.image;
 
-        let status = editAssisted(fd);
-        if (status) this.$router.push('/manage_assisteds');
+        let status = await editAuthor(fd)
+        if(status)this.$router.push('/manage_authors')
       }
-      this.isLoading = false;
-    },
+        this.isLoading = false;
+     },
 
     cancel() {
-      this.$router.push('/manage_assisteds');
+      this.$router.push('/manage_authors');
     },
+    // pop up
     openPopupEdit(edit){
-      this.type='editAssisted';
+      this.type='editAuthor';
       this.selected = edit;
       this.openDialog = true;
     },
   },
   components: {
     FormHeader,
+    AuthorForm,
     AddressForm,
-    AssistedForm,
-    Popup,
+    Popup
   },
 };
 </script>
 
-<style>
-.assisted-form {
+<style scoped lang="css">
+.author-form {
   padding: 1% 3%;
 }
 

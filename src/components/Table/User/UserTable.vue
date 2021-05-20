@@ -23,7 +23,7 @@
               <v-btn id='delete' @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn id='edit' @click="openPopupEdit(edit)" icon>
+              <v-btn id='edit' @click=router-link :to ="{ path: '/edit_user' }" icon>
                 <v-icon>mdi-cogs</v-icon>
               </v-btn>
             </td>
