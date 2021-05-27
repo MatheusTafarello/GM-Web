@@ -42,7 +42,8 @@ export default {
   data: () => ({
     routes: [
       { name: 'Pagina Inicial', route: 'home' },
-      { name: 'Gerenciar Assistida', route: 'edit_assisted' },
+      { name: 'Gerenciar Assistidas', route: 'manage_assisteds' },
+      { name: 'Editar Assistida', route:'' }
     ],
     form: {},
     isLoading: false,

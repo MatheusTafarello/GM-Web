@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export async function getUsers(permissionId) {
+
   try {
     let config = {
       headers: { Authorization: localStorage.getItem("token") }

@@ -44,7 +44,6 @@ export default {
       route: [
         { name: 'Página Inicial', route: 'home' },
         { name: 'Gerenciar Assistidas', route:''},
-        { name: '', route: 'EditAssisted' }
       ],
       headers: [
         { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },

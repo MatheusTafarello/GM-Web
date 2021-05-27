@@ -13,7 +13,7 @@
       </v-card-actions>
       <v-card-actions v-else>
         <div id="button">
-          <v-btn color="primary" @click="$emit('cancel')">Ok</v-btn>
+          <v-btn color="primary" onclick="javascript:history.back()">Ok</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -97,10 +97,4 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
-/* .Edição {
-   width: 90%;
-   height: 90%;
-
-} */
 </style>

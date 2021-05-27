@@ -45,7 +45,7 @@ export default {
       authors: [],
       route: [
         { name: 'Página Inicial', route: 'home' },
-        { name: 'Gerenciar Autores', route: 'manage_authors' },
+        { name: 'Gerenciar Autores', route: '' },
       ],
       headers: [
         { text: 'Nome', align: 'start', sortable: true, value: 'fullName' },

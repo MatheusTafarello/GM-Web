@@ -6,6 +6,7 @@
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
+          ref="fullname"
           label="Nome completo"
           dense
           outlined
@@ -15,6 +16,7 @@
         <p class="subtitle">Nome de Usuário</p>
         <v-text-field
           v-model="form.login"
+          ref="username"
           label="Nome utilizado para login"
           dense
           outlined
@@ -24,6 +26,7 @@
         <p class="subtitle">Senha</p>
         <v-text-field
           v-model="form.password"
+          ref="password"
           dense
           outlined
           name="password"
@@ -37,15 +40,17 @@
         <p class="subtitle">E-mail</p>
         <v-text-field
           v-model="form.email"
+          ref="email"
           label="Insira seu E-mail"
           dense
           outlined
           :rules="rules.email"
-          ref="email"
+          
         ></v-text-field>
         <p class="subtitle">Permissão</p>
         <v-select
           v-model="selectedPermission"
+          ref="permission"
           dense
           outlined
           label="Selecione o tipo de permissão"
@@ -90,6 +95,11 @@ export default {
     },
   }),
   methods: {
+
+    async initialize() {
+      this.output = this.form.fullName
+    },
+
     async sendForm() {
       if (this.selectedPermission == 'Adminstrador') {
         this.form.permissionId = 2;

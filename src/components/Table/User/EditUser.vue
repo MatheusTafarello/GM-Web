@@ -89,7 +89,8 @@ export default {
     selectedPermission: '',
     routes: [
       { name: 'Pagina Inicial', route: 'home' },
-      { name: 'Usuário', route: 'register_user' },
+      { name: 'Gerenciar Funcionários', route: 'manage_users' },
+      { name: 'Editar Funcionários', route: ''}
     ],
     openDialog: false,
     isLoading: false,

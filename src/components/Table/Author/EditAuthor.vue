@@ -42,7 +42,8 @@ export default {
   data: () => ({
     routes: [
       { name: "Pagina Inicial", route: "home" },
-      { name: "Autor", route: "edit_author" }
+      { name: "Gerenciar Autores", route: "manege_authors" },
+      { name: "Editar Autor", router: ""}
     ],
     form: {},
     openDialog: false,
