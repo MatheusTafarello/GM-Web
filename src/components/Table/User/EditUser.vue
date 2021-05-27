@@ -2,12 +2,12 @@
   <div>
       <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Editar Usuário" :list="routes" />
-    <div>
+    <div :user="users">
       <v-form class="form" ref="form">
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
-          label="Nome completo"
+          label= "Nome completo"
           dense
           outlined
           :rules="rules.required"
@@ -16,10 +16,11 @@
         <p class="subtitle">Nome de Usuário</p>
         <v-text-field
           v-model="form.login"
-          label="Nome utilizado para login"
+          label= "Nome de usuário"
           dense
           outlined
           :rules="rules.login"
+          
         ></v-text-field>
 
         <p class="subtitle">Senha</p>
@@ -82,8 +83,10 @@
 import { createUser } from '@/services/user.js';
 import Popup from '@/common-components/Popup/Popup.vue';
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
+import { getUsers } from '@/services/user.js';
 export default {
   data: () => ({
+    users: [],
     vpassword: String,
     form: { fullName: '', login: '', email: '', permissionId: '', password: '' },
     selectedPermission: '',
@@ -112,7 +115,16 @@ export default {
       ],
     },
   }),
+  created() {
+    this.initialize();
+  },
   methods: {
+    async initialize() {
+      this.users = await getUsers();
+      this.users = this.users[0];
+      // this.users = this.users.filter(user => user.id === this.$route.query.id);
+      console.log(this.users);
+    },
     async sendForm() {
       if (this.selectedPermission == 'Adminstrador') {
         this.form.permissionId = 2;
@@ -136,6 +148,7 @@ export default {
     Popup,
   },
 };
+
 </script>
 
 <style scoped>
