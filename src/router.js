@@ -8,7 +8,9 @@ import Dashboard from "@/components/Dashboard/Dashboard.vue";
 import RegisterAuthor from "@/components/Register/Author/RegisterAuthor.vue"
 import RegisterAssisted from "@/components/Register/Assisted/RegisterAssisted.vue"
 import RegisterUser from "@/components/Register/UserForm/UserForm.vue"
+import EditAuthor from "@/components/Table/Author/EditAuthor.vue"
 import EditAssisted from "@/components/Table/Assisted/EditAssisted.vue"
+import EditUser from "@/components/Table/User/EditUser.vue"
 import AssistedTable from "@/components/Table/Assisted/AssistedTable.vue"
 import AuthorTable from "@/components/Table/Author/AuthorTable.vue"
 import UserTable from "@/components/Table/User/UserTable.vue"
@@ -50,11 +52,21 @@ export default new Router({
       path: "/register_assisted",
       beforeEnter: loggedInGuard,
       component: RegisterAssisted
+    }, 
+    {
+      path: "/manage_authors",
+      beforeEnter: loggedInGuard,
+      component: AuthorTable
     },
     {
       path: "/manage_assisteds",
       beforeEnter: loggedInGuard,
       component: AssistedTable
+    }, 
+    {
+      path: "/edit_author",
+      beforeEnter: loggedInGuard,
+      component: EditAuthor
     },
     {
       path: "/edit_assisted",
@@ -62,9 +74,9 @@ export default new Router({
       component: EditAssisted
     },
     {
-      path: "/manage_authors",
+      path: "/edit_user",
       beforeEnter: loggedInGuard,
-      component: AuthorTable
+      component: EditUser
     },
     {
       path: "/manage_users",

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <FormHeader class="header" title="Cadastrar" :list="routes" />
-    <div>
+      <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
+    <FormHeader class="header" title="Editar Usuário" :list="routes" />
+    <div :user="users">
       <v-form class="form" ref="form">
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
-          ref="fullname"
-          label="Nome completo"
+          label= "Nome completo"
           dense
           outlined
           :rules="rules.required"
@@ -16,17 +16,16 @@
         <p class="subtitle">Nome de Usuário</p>
         <v-text-field
           v-model="form.login"
-          ref="username"
-          label="Nome utilizado para login"
+          label= "Nome de usuário"
           dense
           outlined
           :rules="rules.login"
+          
         ></v-text-field>
 
         <p class="subtitle">Senha</p>
         <v-text-field
           v-model="form.password"
-          ref="password"
           dense
           outlined
           name="password"
@@ -40,23 +39,41 @@
         <p class="subtitle">E-mail</p>
         <v-text-field
           v-model="form.email"
-          ref="email"
           label="Insira seu E-mail"
           dense
           outlined
           :rules="rules.email"
-          
+          ref="email"
         ></v-text-field>
+
         <p class="subtitle">Permissão</p>
         <v-select
           v-model="selectedPermission"
-          ref="permission"
           dense
           outlined
           label="Selecione o tipo de permissão"
           :items="permissions"
         ></v-select>
-        <v-btn @click="sendForm" class="buttons" elevation="2" color="success">Criar</v-btn>
+
+        <div class="buttons">
+            <v-btn 
+                class="btn" 
+                raised 
+                color="gray" 
+                @click="cancel"
+            >
+            Cancelar
+            </v-btn>
+
+            <v-btn 
+                class="btn" 
+                elevation="2" 
+                color="success"
+                @click="sendForm, openPopupEdit(edit)" 
+            >
+            Salvar
+            </v-btn>
+    </div>
       </v-form>
     </div>
   </div>
@@ -64,19 +81,23 @@
 
 <script>
 import { createUser } from '@/services/user.js';
+import Popup from '@/common-components/Popup/Popup.vue';
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
+import { getUsers } from '@/services/user.js';
 export default {
-  components: {
-    FormHeader,
-  },
   data: () => ({
+    users: [],
     vpassword: String,
     form: { fullName: '', login: '', email: '', permissionId: '', password: '' },
     selectedPermission: '',
     routes: [
       { name: 'Pagina Inicial', route: 'home' },
-      { name: 'Usuário', route: 'register_user' },
+      { name: 'Gerenciar Funcionários', route: 'manage_users' },
+      { name: 'Editar Funcionários', route: ''}
     ],
+    openDialog: false,
+    isLoading: false,
+    type: 'delete',
 
     permissions: ['Administrador', 'Patrulha'],
 
@@ -94,12 +115,16 @@ export default {
       ],
     },
   }),
+  created() {
+    this.initialize();
+  },
   methods: {
-
     async initialize() {
-      this.output = this.form.fullName
+      this.users = await getUsers();
+      this.users = this.users[0];
+      // this.users = this.users.filter(user => user.id === this.$route.query.id);
+      console.log(this.users);
     },
-
     async sendForm() {
       if (this.selectedPermission == 'Adminstrador') {
         this.form.permissionId = 2;
@@ -107,25 +132,51 @@ export default {
         this.form.permissionId = 3;
       }
       let status = await createUser(this.form);
-      if (status) this.$router.push('/home');
+      if (status) this.$router.push('/home')
     },
+    cancel() {
+      this.$router.push('/manage_users');
+    },
+    openPopupEdit(edit){
+      this.type='editUser';
+      this.selected = edit;
+      this.openDialog = true;
+    },
+     },
+    components: {
+    FormHeader,
+    Popup,
   },
 };
+
 </script>
 
 <style scoped>
 .subtitle {
   font-size: 18px;
 }
+
 .header {
   padding: 1% 3%;
 }
+
 .form {
   margin-top: 5px;
   padding: 1% 30%;
 }
+
 .buttons {
-  width: 30%;
-  margin: 0% 35%;
+  position: relative;
+  bottom: 15%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  margin-right: 0.7rem;
+  margin-left: 0.3rem;
 }
 </style>

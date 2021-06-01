@@ -53,7 +53,7 @@
                 >
               </v-btn>
             </template>
-            <span>Upload image</span>
+            <span>Enviar imagem</span>
           </v-tooltip>
         </div>
       </div>
