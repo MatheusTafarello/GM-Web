@@ -53,7 +53,7 @@ export async function editAssisted(payload) {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    let response = await axios.put(process.env.VUE_APP_API + "admin/assisted/" + payload.data.id, payload, config);
+    let response = await axios.put(process.env.VUE_APP_API + "admin/assisted/" , payload, config);
     return response;
   } catch (error) {
     return Promise.reject(error)
