@@ -9,20 +9,20 @@
     <div class="buttons">
 
       <v-btn 
-      class="btn" 
-      raised 
-      color="gray" 
-      @click="cancel"
+        class="btn" 
+        raised 
+        color="gray" 
+        @click="cancel"
       >
       Cancelar
       </v-btn>
 
       <v-btn 
-      class="btn" 
-      raised 
-      color="success" 
-      :loading="isLoading" 
-      @click="editAssisted, openPopupEdit(edit)"
+        class="btn" 
+        raised 
+        color="success" 
+        :loading="isLoading" 
+        @click="editAssisted, openPopupEdit(edit)"
       >
       Concluir
       </v-btn>
