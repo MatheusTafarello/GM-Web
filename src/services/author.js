@@ -34,6 +34,16 @@ export async function deleteAuthor(id) {
     return Promise.reject(error)
   }
 }
+export async function editAuthor(author) {
+  try {
+    const config = {
+      headers: { Authorization: localStorage.getItem("token") }
+    }
+    await axios.put(process.env.VUE_APP_API + "admin/author/",author, config);
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
 
 export async function registerAuthor(author) {
 

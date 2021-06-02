@@ -22,7 +22,8 @@ export function logout() {
 }
 
 export function isSignedIn() {
-  try {
+  return true;
+  /*try {
     const token = localStorage.getItem('token');
     if (!token) return false;
     return true;
@@ -30,7 +31,7 @@ export function isSignedIn() {
     console.warn(e);
     return false;
   }
-
+*/
   /*  try {
      const { exp: expiration } = decode(token);
      const isExpired = !!expiration && Date.now() > expiration * 1000;

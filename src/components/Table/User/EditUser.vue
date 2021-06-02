@@ -80,10 +80,9 @@
 </template>
 
 <script>
-import { createUser } from '@/services/user.js';
 import Popup from '@/common-components/Popup/Popup.vue';
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import { getUsers } from '@/services/user.js';
+import { getUsers, editUser } from '@/services/user.js';
 export default {
   data: () => ({
     users: [],
@@ -131,7 +130,7 @@ export default {
       } else {
         this.form.permissionId = 3;
       }
-      let status = await createUser(this.form);
+      let status = await editUser(this.form);
       if (status) this.$router.push('/home')
     },
     cancel() {
