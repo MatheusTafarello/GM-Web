@@ -48,12 +48,12 @@ export async function deleteAssisted(id) {
   }
 }
 
-export async function editAssisted(payload) {
+export async function editAssisted(id, payload) {
   try {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    let response = await axios.put(process.env.VUE_APP_API + "admin/assisted/" , payload, config);
+    let response = await axios.put(process.env.VUE_APP_API + "admin/assisted/" + id , payload, config);
     return response;
   } catch (error) {
     return Promise.reject(error)

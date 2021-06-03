@@ -16,15 +16,16 @@
         label="CPF"
         :rules="rules.cpf"
         maxlength="11"
-        @input="formatCPF(form.cpf), sendData()"
         dense
         outlined
+        @input="formatCPF(form.cpf), sendData()"
       />
       <v-textarea
         height="100px"
         v-model="form.observation"
         :rules="rules.observation"
         label="Observação"
+        id="textarea"
         dense
         outlined
         @input="sendData()"
@@ -43,9 +44,9 @@
           v-model="form.hasGun"
           label="Porte de arma?"
           style="margin: 0px 15px; padding: 0"
-          @input="sendData()"
           true-value="true"
           false-value="false"
+          @input="sendData()"
         />
       </div>
       <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
@@ -57,7 +58,7 @@
               <v-icon large :color="imgError ? 'error' : 'primary'">mdi-file-image-outline</v-icon>
             </v-btn>
           </template>
-          <span>Upload image</span>
+          <span>Enviar imagem</span>
         </v-tooltip>
       </div>
     </v-form>
@@ -66,6 +67,15 @@
 
 <script>
 export default {
+  props:{
+    author:{
+      type: Object,
+    },
+  },
+  mounted: async function(){
+    this.form = this.author;
+  },
+
   data: () => ({
     form: {
       authorValid: false,
@@ -162,5 +172,9 @@ h1 {
   width: 120px;
   height: 120px;
   border-radius: 5px;
+}
+
+#textarea{
+  resize: none;
 }
 </style>

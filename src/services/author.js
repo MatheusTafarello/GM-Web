@@ -12,6 +12,18 @@ export async function getAuthors() {
   }
 }
 
+export async function getOne(id) {
+  try {
+    const config = {
+      headers: { Authorization: localStorage.getItem("token") }
+    }
+    let response = await axios.get(process.env.VUE_APP_API + `admin/author/${id}`, config);
+    return response.data
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 export async function getAuthorPicture(id) {
   try {
     const config = {
@@ -34,12 +46,13 @@ export async function deleteAuthor(id) {
     return Promise.reject(error)
   }
 }
-export async function editAuthor(author) {
+
+export async function editAuthor(id, data) {
   try {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    await axios.put(process.env.VUE_APP_API + "admin/author/",author, config);
+    await axios.put(process.env.VUE_APP_API + "admin/author/" + id, data, config);
   } catch (error) {
     return Promise.reject(error)
   }

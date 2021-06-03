@@ -24,6 +24,7 @@ export default {
     AuthorForm,
     AddressForm
   },
+  
   data: () => ({
     routes: [
       { name: "Pagina Inicial", route: "home" },
@@ -77,7 +78,6 @@ export default {
     }
   }
 
-
 </script>
 
 <style scoped lang="css">
@@ -106,6 +106,7 @@ export default {
   margin-top: 20px;
   padding: 0;
 }
+
 .buttons {
   display: flex;
   justify-content: space-around;

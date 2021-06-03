@@ -22,7 +22,7 @@
         raised 
         color="success" 
         :loading="isLoading" 
-        @click="editAssisted, openPopupEdit(edit)"
+        @click="sendAssisted()" 
       >
       Concluir
       </v-btn>
@@ -56,7 +56,8 @@ export default {
         this.form[key] = form[key];
       });
     },
-    async editAssisted() {
+    async sendAssisted() {
+      const id = this.$route.query.id;
       const { assistedValid, addressValid } = this.form;
       const form = { ...this.form };
       this.isLoading = true;
@@ -83,7 +84,9 @@ export default {
         }
         delete form.image;
 
-        let status = editAssisted(fd);
+        let status = await editAssisted(id, fd);
+        this.type='editAssisted';
+        this.openDialog = true;
         if (status) this.$router.push('/manage_assisteds');
       }
       this.isLoading = false;
@@ -91,11 +94,6 @@ export default {
 
     cancel() {
       this.$router.push('/manage_assisteds');
-    },
-    openPopupEdit(edit){
-      this.type='editAssisted';
-      this.selected = edit;
-      this.openDialog = true;
     },
   },
   components: {

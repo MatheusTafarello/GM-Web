@@ -26,12 +26,14 @@ export async function deleteUser(id) {
     return Promise.reject(error)
   }
 }
-export async function editUser(data) {
+
+export async function editUser(id, data) {
+  console.log(data)
   try {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    await axios.put(process.env.VUE_APP_API + "admin/user/",data, config);
+    await axios.put(process.env.VUE_APP_API + "admin/user/" + id, data, config);
   } catch (error) {
     return Promise.reject(error)
   }
@@ -47,5 +49,4 @@ export async function createUser(data) {
   } catch (error) {
     return Promise.reject(error)
   }
-
 }

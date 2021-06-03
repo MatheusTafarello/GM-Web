@@ -3,7 +3,7 @@
       <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Editar Usuário" :list="routes" />
     <div :user="users">
-      <v-form class="form" ref="form">
+      <v-form class="form">
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
@@ -57,19 +57,19 @@
 
         <div class="buttons">
             <v-btn 
-                class="btn" 
-                raised 
-                color="gray" 
-                @click="cancel"
+              class="btn" 
+              raised 
+              color="gray" 
+              @click="cancel"
             >
             Cancelar
             </v-btn>
 
             <v-btn 
-                class="btn" 
-                elevation="2" 
-                color="success"
-                @click="sendForm, openPopupEdit(edit)" 
+              class="btn" 
+              elevation="2" 
+              color="success"
+              @click="sendUser()"
             >
             Salvar
             </v-btn>
@@ -87,12 +87,13 @@ export default {
   data: () => ({
     users: [],
     vpassword: String,
-    form: { fullName: '', login: '', email: '', permissionId: '', password: '' },
+    form: { fullName: '', login: '', email: '', permissionId: '', password: ''},
+    data:'',
     selectedPermission: '',
     routes: [
       { name: 'Pagina Inicial', route: 'home' },
       { name: 'Gerenciar Funcionários', route: 'manage_users' },
-      { name: 'Editar Funcionários', route: ''}
+      { name: 'Editar Funcionário', route: ''}
     ],
     openDialog: false,
     isLoading: false,
@@ -121,25 +122,22 @@ export default {
     async initialize() {
       this.users = await getUsers();
       this.users = this.users[0];
-      // this.users = this.users.filter(user => user.id === this.$route.query.id);
       console.log(this.users);
     },
-    async sendForm() {
+    async sendUser() {
+      const id = this.$route.query.id;
       if (this.selectedPermission == 'Adminstrador') {
         this.form.permissionId = 2;
       } else {
         this.form.permissionId = 3;
       }
-      let status = await editUser(this.form);
+      let status = await editUser(id, this.form);
+      this.type='editUser';
+      this.openDialog = true;
       if (status) this.$router.push('/home')
     },
     cancel() {
       this.$router.push('/manage_users');
-    },
-    openPopupEdit(edit){
-      this.type='editUser';
-      this.selected = edit;
-      this.openDialog = true;
     },
      },
     components: {
@@ -147,7 +145,6 @@ export default {
     Popup,
   },
 };
-
 </script>
 
 <style scoped>
