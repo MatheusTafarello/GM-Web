@@ -20,10 +20,19 @@
               }}
             </td>
             <td>
-              <v-btn id='delete' @click="openPopupItem(item)" icon>
+              <v-btn 
+                id='delete' 
+                @click="openPopupItem(item)" 
+                icon
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn id='edit' @click=router-link :to ="{ path: '/edit_user', query: {id: item.id} }" icon>
+              <v-btn 
+                id='edit' 
+                @click=router-link 
+                :to ="{ path: '/edit_user', query: {id: item.id} }" 
+                icon
+              >
                 <v-icon>mdi-cogs</v-icon>
               </v-btn>
             </td>
