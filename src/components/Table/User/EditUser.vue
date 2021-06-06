@@ -7,7 +7,7 @@
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
-          label= "Nome completo"
+          v-bind:label="form.fullName"
           dense
           outlined
           :rules="rules.required"
