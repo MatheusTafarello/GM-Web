@@ -7,7 +7,7 @@
         <p class="subtitle">Nome Completo</p>
         <v-text-field
           v-model="form.fullName"
-          v-bind:label="form.fullName"
+          label= "Nome completo"
           dense
           outlined
           :rules="rules.required"
@@ -82,7 +82,7 @@
 <script>
 import Popup from '@/common-components/Popup/Popup.vue';
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
-import { getUsers, editUser } from '@/services/user.js';
+import { getUser, editUser } from '@/services/user.js';
 export default {
   data: () => ({
     users: [],
@@ -115,14 +115,14 @@ export default {
       ],
     },
   }),
-  created() {
-    this.initialize();
+   async created() {
+    await this.initialize();
   },
   methods: {
     async initialize() {
-      this.users = await getUsers();
-      this.users = this.users[0];
-      console.log(this.users);
+      this.user = await getUser(this.$route.query.id);
+      this.form = this.user;
+      this.form.password = '';
     },
     async sendUser() {
       const id = this.$route.query.id;
