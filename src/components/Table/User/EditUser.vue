@@ -20,7 +20,6 @@
           dense
           outlined
           :rules="rules.login"
-          
         ></v-text-field>
 
         <p class="subtitle">Senha</p>
