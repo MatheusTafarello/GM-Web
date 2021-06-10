@@ -19,7 +19,7 @@
               <v-btn @click="openPopupItem(item)" icon>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn @click=router-link :to ="{ path: '/edit_author' }" icon>
+              <v-btn @click=router-link :to ="{ path: '/edit_author', query: {id: item.id} }" icon>
                 <v-icon>mdi-account-edit</v-icon> 
               </v-btn>
             </td>

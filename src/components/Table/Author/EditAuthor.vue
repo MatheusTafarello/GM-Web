@@ -3,8 +3,8 @@
     <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
-      <AuthorForm class="container" @sendData="fetchData" />
-      <AddressForm @sendData="fetchData" class="container" />
+      <EditAuthorForm class="container" @sendData="fetchData" />
+      <EditAddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
@@ -34,8 +34,8 @@
 <script>
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import Popup from '@/common-components/Popup/Popup.vue';
-import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
-import AuthorForm from "../../Register/Author/AuthorForm/AuthorForm.vue";
+import EditAddressForm from "./EditAddressForm.vue";
+import EditAuthorForm from "./EditAuthorForm.vue";
 import { editAuthor } from "@/services/author.js";
 
 export default {
@@ -104,8 +104,8 @@ export default {
   },
   components: {
     FormHeader,
-    AuthorForm,
-    AddressForm,
+    EditAuthorForm,
+    EditAddressForm,
     Popup
   },
 };
