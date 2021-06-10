@@ -3,8 +3,8 @@
     <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
-      <AuthorForm :author="author" class="container" @sendData="fetchData" />
-      <AddressForm :author="author" class="container" @sendData="fetchData"  />
+      <EditAuthorForm class="container" @sendData="fetchData" />
+      <EditAddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
@@ -32,10 +32,11 @@
 
 <script>
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
-import AuthorForm from "../../Register/Author/AuthorForm/AuthorForm.vue";
-import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
 import Popup from '@/common-components/Popup/Popup.vue';
-import { editAuthor, getAuthor } from "@/services/author.js";
+import EditAddressForm from "./EditAddressForm.vue";
+import EditAuthorForm from "./EditAuthorForm.vue";
+import { editAuthor } from "@/services/author.js";
+
 export default {
   data: () => ({
     routes: [
@@ -49,15 +50,8 @@ export default {
     type: 'delete',
     author: null, 
   }),
-  async created() {
-    await this.initialize();
-  },
-
+  
   methods: {
-    async initialize() {
-      this.author = await getAuthor(this.$route.query.id);
-      this.form = this.author;
-    },
     sendData() {
       this.$emit('sendData', this.form);
     },
@@ -108,8 +102,8 @@ export default {
   },
   components: {
     FormHeader,
-    AuthorForm,
-    AddressForm,
+    EditAuthorForm,
+    EditAddressForm,
     Popup
   },
 };

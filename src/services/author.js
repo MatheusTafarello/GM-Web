@@ -12,24 +12,13 @@ export async function getAuthors() {
   }
 }
 
-export async function deleteAuthor(id) {
-  try {
-    const config = {
-      headers: { Authorization: localStorage.getItem("token") }
-    }
-    await axios.delete(process.env.VUE_APP_API + "admin/author/" + id, config);
-  } catch (error) {
-    return Promise.reject(error)
-  }
-}
-
 export async function getAuthor(id) {
   try {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    let response = await axios.get(process.env.VUE_APP_API + `admin/author/`+ id, config);
-    return response.data;
+    let response = await axios.get(process.env.VUE_APP_API + "admin/author/" + id, config);
+    return response.data
   } catch (error) {
     return Promise.reject(error)
   }
