@@ -4,7 +4,7 @@
     <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
       <AuthorForm :author="author" class="container" @sendData="fetchData" />
-      <AddressForm @sendData="fetchData" class="container" />
+      <AddressForm :author="author" class="container" @sendData="fetchData"  />
     </div>
     <div class="buttons">
 
@@ -12,7 +12,7 @@
         class="btn" 
         raised 
         color="gray" 
-        @click="cancel"
+        @click="cancel()"
       >
       Cancelar
       </v-btn>
@@ -32,11 +32,10 @@
 
 <script>
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
-import Popup from '@/common-components/Popup/Popup.vue';
-import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
 import AuthorForm from "../../Register/Author/AuthorForm/AuthorForm.vue";
-import { editAuthor, getOne } from "@/services/author.js";
-
+import AddressForm from "@/common-components/AddressForm/AddressForm.vue";
+import Popup from '@/common-components/Popup/Popup.vue';
+import { editAuthor, getAuthor } from "@/services/author.js";
 export default {
   data: () => ({
     routes: [
@@ -50,16 +49,14 @@ export default {
     type: 'delete',
     author: null, 
   }),
-  created() {
-    this.initialize();
+  async created() {
+    await this.initialize();
   },
 
   methods: {
     async initialize() {
-      let recievedAuthor = await getOne(this.$route.query.id);
-      this.form = recievedAuthor;
-      this.author = recievedAuthor;
-      console.log(recievedAuthor)
+      this.author = await getAuthor(this.$route.query.id);
+      this.form = this.author;
     },
     sendData() {
       this.$emit('sendData', this.form);
@@ -69,11 +66,6 @@ export default {
         this.form[key] = form[key];
       });
     },
-
-    cancel() {
-      this.$router.push('/manage_authors');
-    },
-    // pop up
     async sendAuthor(){
       const id = this.$route.query.id;
       const { authorValid, addressValid } = this.form;
@@ -103,17 +95,21 @@ export default {
         }
         delete form.image;
 
-        let status = await editAuthor(id, fd)
+        let status = await editAuthor(id, this.form)
+        // pop up
         this.type='editAuthor';
         this.openDialog = true;
-        if(status)this.$router.push('/manage_authors')
+        if (status) this.$router.push('/manage_authors')
       }
+    },
+    cancel() {
+      this.$router.push('/manage_authors');
     },
   },
   components: {
     FormHeader,
-    AddressForm,
     AuthorForm,
+    AddressForm,
     Popup
   },
 };

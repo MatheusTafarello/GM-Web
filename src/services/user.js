@@ -17,13 +17,11 @@ export async function getUsers(permissionId) {
 }
 
 export async function getUser(id) {
-
   try {
-    let config = {
+    const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-    
-    const response = await axios.get(process.env.VUE_APP_API + 'admin/user/' + id, config)
+    let response = await axios.get(process.env.VUE_APP_API + 'admin/user/' + id, config)
     return response.data;
   } catch (error) {
     return Promise.reject(error)

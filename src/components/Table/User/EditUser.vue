@@ -59,7 +59,7 @@
               class="btn" 
               raised 
               color="gray" 
-              @click="cancel"
+              @click="cancel()"
             >
             Cancelar
             </v-btn>
@@ -117,6 +117,7 @@ export default {
    async created() {
     await this.initialize();
   },
+
   methods: {
     async initialize() {
       this.user = await getUser(this.$route.query.id);
@@ -131,6 +132,7 @@ export default {
         this.form.permissionId = 3;
       }
       let status = await editUser(id, this.form);
+      //popup
       this.type='editUser';
       this.openDialog = true;
       if (status) this.$router.push('/home')

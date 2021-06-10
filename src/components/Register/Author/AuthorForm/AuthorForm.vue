@@ -4,8 +4,8 @@
     <v-form class="form" v-model="form.authorValid">
       <v-text-field
         v-model="form.fullName"
-        :rules="rules.fullName"
         label="Nome Completo"
+        :rules="rules.fullName"
         dense
         outlined
         validate-on-blur
@@ -21,10 +21,10 @@
         @input="formatCPF(form.cpf), sendData()"
       />
       <v-textarea
-        height="100px"
         v-model="form.observation"
-        :rules="rules.observation"
         label="Observação"
+        :rules="rules.observation"
+        height="100px"
         id="textarea"
         dense
         outlined
@@ -34,10 +34,10 @@
       <div style="display: flex; align-items: center">
         <v-text-field
           v-model="form.dvc"
-          dense
-          outlined
           label="DVC"
           :rules="rules.dvc"
+          dense
+          outlined
           @input="sendData()"
         />
         <v-checkbox
