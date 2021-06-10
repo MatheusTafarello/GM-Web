@@ -50,15 +50,8 @@ export default {
     type: 'delete',
     author: null, 
   }),
-  async created() {
-    await this.initialize();
-  },
-
+  
   methods: {
-    async initialize() {
-      this.author = await getAuthor(this.$route.query.id);
-      this.form = this.author;
-    },
     sendData() {
       this.$emit('sendData', this.form);
     },
