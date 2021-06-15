@@ -90,7 +90,7 @@ export default {
       await this.initialize();
       this.openDialog = false;
     },
-    openPopupEdit(edit){
+    openPopupEdit(edit) {
       this.type='editUser';
       this.selected = edit;
       this.openDialog = true;

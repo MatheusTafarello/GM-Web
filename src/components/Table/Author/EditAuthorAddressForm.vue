@@ -144,13 +144,139 @@ export default {
     },
     pegaEstado(state){
       switch(state){
-        case 'São Paulo':{
-          this.form.state = 'SP';
+        case 'Acre':{
+          this.form.state = 'AC';
           break;
+        }
+        case 'Alagoas':{
+          this.form.state = 'AL';
+          break;
+          
+        }
+        case 'Amapá':{
+          this.form.state = 'AP';
+          break;
+          
+        }
+        case 'Amazonas':{
+          this.form.state = 'AM';
+          break;
+          
+        }
+        case 'Bahia':{
+          this.form.state = 'BA';
+          break;
+          
+        }
+        case 'Ceará':{
+          this.form.state = 'CE';
+          break;
+          
+        }
+        case 'Distrito Federal':{
+          this.form.state = 'DF';
+          break;
+          
+        }
+        case 'Espírito Santo':{
+          this.form.state = 'ES';
+          break;
+          
+        }
+        case 'Goiás':{
+          this.form.state = 'GO';
+          break;
+          
+        }
+        case 'Maranhão':{
+          this.form.state = 'MA';
+          break;
+          
+        }
+        case 'Mato Grosso':{
+          this.form.state = 'MT';
+          break;
+          
+        }
+        case 'Mato Grosso do Sul':{
+          this.form.state = 'MS';
+          break;
+          
+        }
+        case 'Minas Gerais':{
+          this.form.state = 'MG';
+          break;
+          
+        }
+        case 'Pará':{
+          this.form.state = 'PA';
+          break;
+          
+        }
+        case 'Paraíba':{
+          this.form.state = 'PB';
+          break;
+          
+        }
+        case 'Paraná':{
+          this.form.state = 'PR';
+          break;
+          
         }
         case 'Pernambuco':{
           this.form.state = 'PE';
           break;
+          
+        }
+        case 'Piauí':{
+          this.form.state = 'PI';
+          break;
+          
+        }
+        case 'Rio de Janeiro':{
+          this.form.state = 'RJ';
+          break;
+          
+        }
+        case 'Rio Grande do Norte':{
+          this.form.state = 'RN';
+          break;
+          
+        }
+        case 'Rio do Sul':{
+          this.form.state = 'RS';
+          break;
+          
+        }
+        case 'Roraima':{
+          this.form.state = 'RR';
+          break;
+          
+        }
+        case 'Rondônia':{
+          this.form.state = 'RO';
+          break;
+          
+        }
+        case 'Santa Catarina':{
+          this.form.state = 'SC';
+          break;
+          
+        }
+        case 'São Paulo':{
+          this.form.state = 'SP';
+          break;
+          
+        }
+        case 'Sergipe':{
+          this.form.state = 'SE';
+          break;
+          
+        }
+        case 'Tocantins':{
+          this.form.state = 'TO';
+          break;
+          
         }
         default:{
           break;

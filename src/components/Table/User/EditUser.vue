@@ -132,15 +132,15 @@ export default {
         this.form.permissionId = 3;
       }
       let status = await editUser(id, this.form);
-      //popup
+      //pop up
       this.type='editUser';
       this.openDialog = true;
       if (status) this.$router.push('/home')
     },
     cancel() {
       this.$router.push('/manage_users');
+      },
     },
-     },
     components: {
     FormHeader,
     Popup,

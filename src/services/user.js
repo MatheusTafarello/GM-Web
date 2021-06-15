@@ -40,7 +40,6 @@ export async function deleteUser(id) {
 }
 
 export async function editUser(id, data) {
-  console.log(data)
   try {
     const config = {
       headers: { Authorization: localStorage.getItem("token") }

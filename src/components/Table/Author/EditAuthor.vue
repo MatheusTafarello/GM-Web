@@ -4,7 +4,7 @@
     <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
       <EditAuthorForm class="container" @sendData="fetchData" />
-      <EditAddressForm @sendData="fetchData" class="container" />
+      <EditAuthorAddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
@@ -33,7 +33,7 @@
 <script>
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import Popup from '@/common-components/Popup/Popup.vue';
-import EditAddressForm from "./EditAddressForm.vue";
+import EditAuthorAddressForm from "./EditAuthorAddressForm.vue";
 import EditAuthorForm from "./EditAuthorForm.vue";
 import { editAuthor } from "@/services/author.js";
 
@@ -103,7 +103,7 @@ export default {
   components: {
     FormHeader,
     EditAuthorForm,
-    EditAddressForm,
+    EditAuthorAddressForm,
     Popup
   },
 };
