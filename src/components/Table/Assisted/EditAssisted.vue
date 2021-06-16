@@ -91,11 +91,18 @@ export default {
           } 
         }
         let requestForm = {
-        cpf:'', 
+        cpf: '', 
         fullName: '', 
+        observation: '',
+        // photograph: 'image/*',
+
         cep: '', 
-        observation: '', 
-        // photograph: 'image/jpeg',
+        city: '',
+        district: '',
+        number: '',
+        state: '',
+        street: '',
+
       };
 
       let sanitizedCPF = this.form.cpf.replaceAll('-', '');
@@ -105,12 +112,15 @@ export default {
       sanitizedCEP = sanitizedCEP.replaceAll('.', '');
 
       requestForm.cpf = sanitizedCPF;
-      requestForm.cep = sanitizedCEP;
       requestForm.fullName = this.form.fullName;
       requestForm.observation = this.form.observation;
       // requestForm.photograph = this.form.photograph;
-
-        // fd.delete('assistedAddresses')
+      requestForm.cep = sanitizedCEP;
+      requestForm.city = this.form.city;
+      requestForm.district = this.form.district;
+      requestForm.number = this.form.number;
+      requestForm.state = this.form.state;
+      requestForm.street = this.form.street;
 
         let status = await editAssisted(id, requestForm);
         this.type='editAssisted';
