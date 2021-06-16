@@ -103,6 +103,7 @@ export default {
         let assisted = await getOne(this.$route.query.id);
         this.form = assisted;
         this.formatCPF(this.form.cpf);
+        console.log(this.form)
     },
     sendData() {
       this.formatCPF(this.form.cpf);

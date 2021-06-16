@@ -12,7 +12,7 @@
         class="btn" 
         raised 
         color="gray" 
-        @click="cancel"
+        @click="cancel()"
       >
       Cancelar
       </v-btn>
@@ -46,10 +46,11 @@ export default {
       { name: 'Editar Assistida', route:'' }
     ],
     form: {},
-    isLoading: false,
     openDialog: false,
+    isLoading: false,
     type: 'delete'
   }),
+
   methods: {
     fetchData(form) {
       Object.keys(form).map((key) => {
@@ -57,10 +58,13 @@ export default {
       });
     },
     async sendAssisted() {
+      console.log(this.form)
       const id = this.$route.query.id;
       const { assistedValid, addressValid } = this.form;
       const form = { ...this.form };
-      this.isLoading = true;
+
+      //visualizar qual dos campos está como false/undefined
+      console.info("assistida: ", assistedValid, "endereço: ", addressValid)
 
       if (assistedValid && addressValid) {
         const fd = new FormData();
@@ -72,7 +76,8 @@ export default {
             field === 'image' ||
             field === 'photograph'
           ) {
-            continue;
+            this.isLoading = true;
+            // continue;
           } else {
             if (field === 'cep' || field === 'cpf') {
               let sanitizedField = form[field].replaceAll('-', '');
@@ -85,22 +90,39 @@ export default {
             }
           } 
         }
-        delete form.image;
+        let requestForm = {
+        cpf:'', 
+        fullName: '', 
+        cep: '', 
+        observation: '', 
+        // photograph: 'image/jpeg',
+      };
 
-        fd.delete('assistedAddresses')
-        let status = await editAssisted(id, fd);
-        // pop up
+      let sanitizedCPF = this.form.cpf.replaceAll('-', '');
+      sanitizedCPF = sanitizedCPF.replaceAll('.', '');
+
+      let sanitizedCEP = this.form.cep.replaceAll('-', '');
+      sanitizedCEP = sanitizedCEP.replaceAll('.', '');
+
+      requestForm.cpf = sanitizedCPF;
+      requestForm.cep = sanitizedCEP;
+      requestForm.fullName = this.form.fullName;
+      requestForm.observation = this.form.observation;
+      // requestForm.photograph = this.form.photograph;
+
+        // fd.delete('assistedAddresses')
+
+        let status = await editAssisted(id, requestForm);
         this.type='editAssisted';
         this.openDialog = true;
         if (status) this.$router.push('/manage_assisteds');
       }
-      this.isLoading = false;
     },
-
     cancel() {
       this.$router.push('/manage_assisteds');
     },
   },
+
   components: {
     FormHeader,
     EditAssistedAddressForm,
