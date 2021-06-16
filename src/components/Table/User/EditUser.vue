@@ -124,7 +124,6 @@ export default {
       this.user = await getUser(this.$route.query.id);
       this.form = this.user;
       this.form.id = null; 
-      this.form.password = '';
     },
     async sendUser() {
       const id = this.$route.query.id;
@@ -133,7 +132,7 @@ export default {
       } else {
         this.form.permissionId = 3;
       }
-      let requestForm = { 
+      let requestForm = {
         fullName: '', 
         login: '', 
         email: '', 
@@ -150,7 +149,7 @@ export default {
       //pop up
       this.type='editUser';
       this.openDialog = true;
-      if (status) this.$router.push('/home')
+      if (status) this.$router.push('/manage_users')
     },
     cancel() {
       this.$router.push('/manage_users');

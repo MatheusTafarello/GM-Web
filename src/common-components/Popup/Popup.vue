@@ -47,6 +47,7 @@ export default {
           return 'Autor editado com sucesso!';
         case 'editAssisted':
           return 'Assistida editada com sucesso!';
+          // this.$router.push('../components/Table/Assisted/manage_assisteds.vue');
         case 'editUser':
           return 'Usuário editado com sucesso!';
         default:

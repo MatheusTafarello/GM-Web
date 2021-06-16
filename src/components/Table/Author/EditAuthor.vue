@@ -1,7 +1,7 @@
 <template>
   <div class="author-form">
     <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
-    <FormHeader class="header" title="Editar Autor" :list="routes" />
+    <FormHeader class="header" title="Editar Autor" subTitle :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
       <EditAuthorForm class="container" @sendData="fetchData" />
       <EditAuthorAddressForm @sendData="fetchData" class="container" />
@@ -53,60 +53,63 @@ export default {
   }),
   
   methods: {
-    sendData() {
-      this.$emit('sendData', this.form);
-    },
     fetchData(form) {
       Object.keys(form).map(key => {
         this.form[key] = form[key];
       });
     },
-    async sendAuthor(){
-      const id = this.$route.query.id;
-      const { authorValid, addressValid } = this.form;
+        sendData() {
+          this.$emit('sendData', this.form);
+        },
+        async sendAuthor(){
+          const id = this.$route.query.id;
+          const { authorValid, addressValid } = this.form;
+          const form = { ...this.form };
+          this.isLoading = true;
       
-      const form = { ...this.form };
-      
-      console.log(authorValid, addressValid)
-      if (authorValid && addressValid) {
-        const fd = new FormData();
-        fd.append('photograph', form.image, 'authorPhoto.jpg');
-        for (const field in form) {
-          if (
-            field === 'authorValid' ||
-            field === 'addressValid' ||
-            field === 'image' ||
-            field === 'photograph'
-          ) {
-            continue;
-          } else {
-            
-            if (field === 'cep' || field === 'cpf') {
-              
-              let sanitizedField = form[field].replaceAll('-', '');
-              sanitizedField = sanitizedField.replaceAll('.', '');
-              fd.append(`${field}`, sanitizedField);
-              console.log(sanitizedField)
-            } else {
-              fd.append(`${field}`, form[field]);
+          //visualizar qual dos campos está como false/undefined
+          console.info("autor: ",authorValid, "endereço:", addressValid)
+          if (authorValid && addressValid) {
+            const fd = new FormData();
+            fd.append('photograph', form.image, 'authorPhoto.jpg');
+            for (const field in form) {
+              if (
+                field === 'authorValid' ||
+                field === 'addressValid' ||
+                field === 'image' ||
+                field === 'photograph'
+              ) {
+                continue;
+              } else {
+                
+                if (field === 'cep' || field === 'cpf') {
+                  let sanitizedField = form[field].replaceAll('-', '');
+                  sanitizedField = sanitizedField.replaceAll('.', '');
+                  fd.append(`${field}`, sanitizedField);
+                } else {
+                  fd.append(`${field}`, form[field]);
+                }
+              }
             }
-          }
-        }
-        delete form.image;
+            // delete form.image;
 
-        fd.delete('authorAddresses')
-        fd.delete('id')
-        let status = await editAuthor(id, fd)
-        // pop up
-        this.type='editAuthor';
-        this.openDialog = true;
-        if (status) this.$router.push('/manage_authors')
+            fd.delete('authorAddresses')
+            fd.delete('id')
+            let status = await editAuthor(id, fd)
+
+            // pop up
+            this.type='editAuthor';
+            this.openDialog = true;
+            if (status) this.$router.push('/manage_authors')
+          }
+          this.isLoading = false;
+        },
+      cancel() 
+      {
+        this.$router.push('/manage_authors');
       }
-    },
-    cancel() {
-      this.$router.push('/manage_authors');
-    },
   },
+
   components: {
     FormHeader,
     EditAuthorForm,
