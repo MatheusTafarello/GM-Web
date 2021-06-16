@@ -12,7 +12,6 @@
         @input="sendData()"
       />
       <v-text-field
-        
         v-model="form.cpf"
         label="CPF"
         :rules="rules.cpf"
