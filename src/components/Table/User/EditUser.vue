@@ -119,28 +119,43 @@ export default {
   },
 
   methods: {
+    
     async initialize() {
       this.user = await getUser(this.$route.query.id);
       this.form = this.user;
+      this.form.id = null; 
       this.form.password = '';
     },
     async sendUser() {
       const id = this.$route.query.id;
-      if (this.selectedPermission == 'Adminstrador') {
+      if (this.selectedPermission == 'Administrador') {
         this.form.permissionId = 2;
       } else {
         this.form.permissionId = 3;
       }
-      let status = await editUser(id, this.form);
-      //popup
+      let requestForm = { 
+        fullName: '', 
+        login: '', 
+        email: '', 
+        permissionId: '', 
+        password: ''
+      };
+      requestForm.fullName = this.form.fullName;
+      requestForm.login = this.form.login;
+      requestForm.email = this.form.email;
+      requestForm.permissionId = this.form.permissionId;
+      requestForm.password = this.form.password;
+
+      let status = await editUser(id, requestForm);
+      //pop up
       this.type='editUser';
       this.openDialog = true;
       if (status) this.$router.push('/home')
     },
     cancel() {
       this.$router.push('/manage_users');
+      },
     },
-     },
     components: {
     FormHeader,
     Popup,

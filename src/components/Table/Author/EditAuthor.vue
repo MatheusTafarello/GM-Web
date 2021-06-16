@@ -4,7 +4,7 @@
     <FormHeader class="header" title="Editar Autor" :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
       <EditAuthorForm class="container" @sendData="fetchData" />
-      <EditAddressForm @sendData="fetchData" class="container" />
+      <EditAuthorAddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
@@ -26,6 +26,7 @@
       >
       Concluir
       </v-btn>
+      
     </div>
   </div>  
 </template> 
@@ -33,7 +34,7 @@
 <script>
 import FormHeader from "@/common-components/FormHeader/FormHeader.vue";
 import Popup from '@/common-components/Popup/Popup.vue';
-import EditAddressForm from "./EditAddressForm.vue";
+import EditAuthorAddressForm from "./EditAuthorAddressForm.vue";
 import EditAuthorForm from "./EditAuthorForm.vue";
 import { editAuthor } from "@/services/author.js";
 
@@ -65,7 +66,8 @@ export default {
       const { authorValid, addressValid } = this.form;
       
       const form = { ...this.form };
-
+      
+      console.log(authorValid, addressValid)
       if (authorValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'authorPhoto.jpg');
@@ -78,10 +80,13 @@ export default {
           ) {
             continue;
           } else {
+            
             if (field === 'cep' || field === 'cpf') {
+              
               let sanitizedField = form[field].replaceAll('-', '');
               sanitizedField = sanitizedField.replaceAll('.', '');
               fd.append(`${field}`, sanitizedField);
+              console.log(sanitizedField)
             } else {
               fd.append(`${field}`, form[field]);
             }
@@ -89,7 +94,9 @@ export default {
         }
         delete form.image;
 
-        let status = await editAuthor(id, this.form)
+        fd.delete('authorAddresses')
+        fd.delete('id')
+        let status = await editAuthor(id, fd)
         // pop up
         this.type='editAuthor';
         this.openDialog = true;
@@ -103,7 +110,7 @@ export default {
   components: {
     FormHeader,
     EditAuthorForm,
-    EditAddressForm,
+    EditAuthorAddressForm,
     Popup
   },
 };

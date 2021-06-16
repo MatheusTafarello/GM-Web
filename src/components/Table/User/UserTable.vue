@@ -20,20 +20,23 @@
               }}
             </td>
             <td>
-              <v-btn 
+              <v-btn
+                title='Deletar' 
                 id='delete' 
-                @click="openPopupItem(item)" 
+                @click='openPopupItem(item)'
                 icon
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn 
+              <v-btn
+                title='Editar'
                 id='edit' 
                 @click=router-link 
                 :to ="{ path: '/edit_user', query: {id: item.id} }" 
                 icon
               >
                 <v-icon>mdi-cogs</v-icon>
+                <!-- <v-icon>mdi-mdi-account-edit</v-icon> -->
               </v-btn>
             </td>
           </tr>
@@ -90,7 +93,7 @@ export default {
       await this.initialize();
       this.openDialog = false;
     },
-    openPopupEdit(edit){
+    openPopupEdit(edit) {
       this.type='editUser';
       this.selected = edit;
       this.openDialog = true;

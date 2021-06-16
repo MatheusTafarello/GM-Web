@@ -3,8 +3,8 @@
     <Popup :dialog="openDialog" @cancel="openDialog = false" :type="type" />
     <FormHeader class="header" title="Editar Assistida" subTitle :list="routes" />
     <div :class="['forms', $vuetify.breakpoint.smAndDown ? 'mobile' : 'desktop']">
-      <AssistedForm class="container" @sendData="fetchData" />
-      <AddressForm @sendData="fetchData" class="container" />
+      <EditAssistedForm class="container" @sendData="fetchData" />
+      <EditAssistedAddressForm @sendData="fetchData" class="container" />
     </div>
     <div class="buttons">
 
@@ -34,8 +34,8 @@
 <script>
 import FormHeader from '@/common-components/FormHeader/FormHeader.vue';
 import Popup from '@/common-components/Popup/Popup.vue';
-import AddressForm from '@/common-components/AddressForm/AddressForm.vue';
-import AssistedForm from '../../Register/Assisted/AssistedForm/AssistedForm.vue';
+import EditAssistedAddressForm from './EditAssistedAddressForm.vue';
+import EditAssistedForm from './EditAssistedForm.vue'
 import { editAssisted } from '@/services/assisted.js';
 
 export default {
@@ -61,6 +61,7 @@ export default {
       const { assistedValid, addressValid } = this.form;
       const form = { ...this.form };
       this.isLoading = true;
+
       if (assistedValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'assistedPhoto.jpg');
@@ -78,13 +79,17 @@ export default {
               sanitizedField = sanitizedField.replaceAll('.', '');
               fd.append(`${field}`, sanitizedField);
             } else {
-              fd.append(`${field}`, form[field]);
+              if (field !== 'id') {
+                fd.append(`${field}`, form[field]);
+              }
             }
-          }
+          } 
         }
         delete form.image;
 
+        fd.delete('assistedAddresses')
         let status = await editAssisted(id, fd);
+        // pop up
         this.type='editAssisted';
         this.openDialog = true;
         if (status) this.$router.push('/manage_assisteds');
@@ -98,8 +103,8 @@ export default {
   },
   components: {
     FormHeader,
-    AddressForm,
-    AssistedForm,
+    EditAssistedAddressForm,
+    EditAssistedForm,
     Popup,
   },
 };
