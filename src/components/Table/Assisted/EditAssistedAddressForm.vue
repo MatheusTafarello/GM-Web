@@ -138,8 +138,8 @@ export default {
     async initialize() {
         let address = await getOne(this.$route.query.id);
         this.form = address.assistedAddresses[0];
+        this.formatCep(this.form.cep);
         this.pegaEstado(this.form.state);
-        console.log(this.form);
         
     },
     pegaEstado(state){
@@ -307,6 +307,7 @@ export default {
       }
     },
     sendData() {
+      this.formatCep(this.form.cep);
       this.$emit('sendData', this.form);
     },
   },

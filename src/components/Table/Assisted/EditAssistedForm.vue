@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="headline">Informações Pessoais</h1>
-    <v-form class="form" v-model="form.authorValid">
+    <v-form class="form" v-model="form.assistedValid">
       <v-text-field
         v-model="form.fullName"
         :rules="rules.fullName"
@@ -28,27 +28,10 @@
         label="Observação"
         dense
         outlined
+        no-resize
         @input="sendData()"
       />
 
-      <div style="display: flex; align-items: center">
-        <v-text-field
-          v-model="form.dvc"
-          dense
-          outlined
-          label="DVC"
-          :rules="rules.dvc"
-          @input="sendData()"
-        />
-        <v-checkbox
-          v-model="form.hasGun"
-          label="Porte de arma?"
-          style="margin: 0px 15px; padding: 0"
-          @input="sendData()"
-          true-value="true"
-          false-value="false"
-        />
-      </div>
       <input style="display: none" ref="imgInput" type="file" accept="image/*" @change="loadFile" />
       <div class="imgContainer">
         <img v-if="imgUrl" class="img" :src="imgUrl" @click="$refs.imgInput.click()" />
@@ -58,7 +41,7 @@
               <v-icon large :color="imgError ? 'error' : 'primary'">mdi-file-image-outline</v-icon>
             </v-btn>
           </template>
-          <span>Upload image</span>
+          <span>Enviar Imagem</span>
         </v-tooltip>
       </div>
     </v-form>
@@ -66,17 +49,15 @@
 </template>
 
 <script>
-import { getAuthor } from "@/services/author.js";
+import { getOne } from "@/services/assisted.js";
 
 export default {
   data: () => ({
     form: {
-      authorValid: false,
+      assistedValid: false,
       fullName: '',
       cpf: '',
       observation: '',
-      dvc: '',
-      hasGun: false,
       image: null,
     },
     rules: {
@@ -120,14 +101,12 @@ export default {
   
   methods: {
     async initialize() {
-        let author = await getAuthor(this.$route.query.id);
-        this.form = author;
-        this.form.password = '';
+        let assisted = await getOne(this.$route.query.id);
+        this.form = assisted;
         this.formatCPF(this.form.cpf);
-        this.form.hasGun = this.form.hasGun.toString();
-        console.log(this.form);
     },
     sendData() {
+      this.formatCPF(this.form.cpf);
       this.$emit('sendData', this.form);
     },
     loadFile(e) {

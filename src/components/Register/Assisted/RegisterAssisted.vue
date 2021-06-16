@@ -37,6 +37,7 @@ export default {
       const { assistedValid, addressValid } = this.form;
       const form = { ...this.form };
       this.isLoading = true;
+      
       if (assistedValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'assistedPhoto.jpg');

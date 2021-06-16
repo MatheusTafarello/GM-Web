@@ -138,6 +138,7 @@ export default {
     async initialize() {
         let address = await getAuthor(this.$route.query.id);
         this.form = address.authorAddresses[0];
+        this.formatCep(this.form.cep);
         this.pegaEstado(this.form.state);
         console.log(this.form);
         
@@ -307,6 +308,7 @@ export default {
       }
     },
     sendData() {
+      this.formatCep(this.form.cep);
       this.$emit('sendData', this.form);
     },
   },

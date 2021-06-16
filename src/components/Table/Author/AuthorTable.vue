@@ -16,12 +16,22 @@
             <td>{{ item.cpf }}</td>
             <td>{{ item.dvc }}</td>
             <td>
-              <v-btn @click="openPopupItem(item)" icon>
+              <v-btn 
+                @click="openPopupItem(item)"
+                title="Deletar"
+                icon
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn @click=router-link :to ="{ path: '/edit_author', query: {id: item.id} }" icon>
+
+              <v-btn 
+                @click=router-link :to ="{ path: '/edit_author', query: {id: item.id} }"
+                title="Editar" 
+                icon
+              >
                 <v-icon>mdi-account-edit</v-icon> 
               </v-btn>
+
             </td>
           </tr>
         </template>

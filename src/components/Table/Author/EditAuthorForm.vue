@@ -28,6 +28,7 @@
         label="Observação"
         dense
         outlined
+        no-resize
         @input="sendData()"
       />
 
@@ -122,12 +123,12 @@ export default {
     async initialize() {
         let author = await getAuthor(this.$route.query.id);
         this.form = author;
-        this.form.password = '';
         this.formatCPF(this.form.cpf);
         this.form.hasGun = this.form.hasGun.toString();
         console.log(this.form);
     },
     sendData() {
+      this.formatCPF(this.form.cpf);
       this.$emit('sendData', this.form);
     },
     loadFile(e) {

@@ -61,6 +61,7 @@ export default {
       const { assistedValid, addressValid } = this.form;
       const form = { ...this.form };
       this.isLoading = true;
+
       if (assistedValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'assistedPhoto.jpg');
@@ -78,13 +79,17 @@ export default {
               sanitizedField = sanitizedField.replaceAll('.', '');
               fd.append(`${field}`, sanitizedField);
             } else {
-              fd.append(`${field}`, form[field]);
+              if (field !== 'id') {
+                fd.append(`${field}`, form[field]);
+              }
             }
-          }
+          } 
         }
         delete form.image;
 
+        fd.delete('assistedAddresses')
         let status = await editAssisted(id, fd);
+        // pop up
         this.type='editAssisted';
         this.openDialog = true;
         if (status) this.$router.push('/manage_assisteds');

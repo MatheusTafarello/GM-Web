@@ -15,12 +15,24 @@
             <td>{{ item.fullName }}</td>
             <td>{{ item.cpf }}</td>
             <td>
-              <v-btn id='delete' @click="openPopupItem(item)" icon>
+              <v-btn 
+                id='delete' 
+                @click="openPopupItem(item)"
+                title="Deletar" 
+                icon
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-              <v-btn id='edit' @click=router-link :to ="{ path: '/edit_assisted', query: {id: item.id} }" icon>
+              
+              <v-btn 
+                id='edit' 
+                @click=router-link :to ="{ path: '/edit_assisted', query: {id: item.id} }"
+                title="Editar"  
+                icon
+              >
                 <v-icon>mdi-account-edit</v-icon> 
               </v-btn>
+
             </td>
           </tr>
         </template>

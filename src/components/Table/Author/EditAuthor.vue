@@ -26,6 +26,7 @@
       >
       Concluir
       </v-btn>
+      
     </div>
   </div>  
 </template> 
@@ -65,7 +66,8 @@ export default {
       const { authorValid, addressValid } = this.form;
       
       const form = { ...this.form };
-
+      
+      console.log(authorValid, addressValid)
       if (authorValid && addressValid) {
         const fd = new FormData();
         fd.append('photograph', form.image, 'authorPhoto.jpg');
@@ -78,10 +80,13 @@ export default {
           ) {
             continue;
           } else {
+            
             if (field === 'cep' || field === 'cpf') {
+              
               let sanitizedField = form[field].replaceAll('-', '');
               sanitizedField = sanitizedField.replaceAll('.', '');
               fd.append(`${field}`, sanitizedField);
+              console.log(sanitizedField)
             } else {
               fd.append(`${field}`, form[field]);
             }
@@ -89,7 +94,9 @@ export default {
         }
         delete form.image;
 
-        let status = await editAuthor(id, this.form)
+        fd.delete('authorAddresses')
+        fd.delete('id')
+        let status = await editAuthor(id, fd)
         // pop up
         this.type='editAuthor';
         this.openDialog = true;
